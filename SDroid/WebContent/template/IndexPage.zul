@@ -1,0 +1,67 @@
+<vlayout xmlns:n="native" style="padding: 20px">
+	<tabbox width="70%">
+		<tabs>
+			<tab label="安全政策制定" selected="true" />
+			<tab label="政策比對機制" />
+			<tab label="訊息管理" />
+		</tabs>
+		<tabpanels>
+			<tabpanel>
+				<listbox vflex="true" hflex="1">
+				    <auxhead>
+				        <auxheader colspan="1" iconSclass="icon-pencil"> 安全政策制定</auxheader>
+				    </auxhead>				
+					<listhead>
+						<listheader label="" sort="auto" />
+					</listhead>
+					<listitem>
+						<listcell label="" />
+					</listitem>
+					<listitem>
+						<listcell label="" />
+					</listitem>
+				</listbox>
+			</tabpanel>
+			<tabpanel>
+				<listbox vflex="true" hflex="1">
+				    <auxhead>
+				        <auxheader colspan="1" iconSclass="icon-signal"> 政策比對機制</auxheader>
+				    </auxhead>				
+					<listhead>
+						<listheader label="" sort="auto" />
+					</listhead>
+					<listitem>
+						<listcell label="" />
+					</listitem>
+					<listitem>
+						<listcell label="" />
+					</listitem>
+				</listbox>
+			</tabpanel>
+			<tabpanel>
+				<listbox vflex="true" hflex="1">
+				    <auxhead>
+				        <auxheader colspan="1" iconSclass="icon-file"> 訊息管理</auxheader>
+				    </auxhead>				
+					<listhead>
+						<listheader label="" sort="auto" />
+					</listhead>
+					<listitem>
+						<listcell label="" />
+					</listitem>
+					<listitem>
+						<listcell label="" />
+					</listitem>
+				</listbox>
+			</tabpanel>
+		</tabpanels>
+	</tabbox>
+	
+</vlayout>
+
+<!-- 
+								<button sclass="btn-primary btn-mini" zclass="btn" label="Edit"/>
+								<button sclass="btn-success btn-mini" zclass="btn" label="Publish"/>
+								<button sclass="btn-danger btn-mini" zclass="btn" label="Delete"/>
+
+ -->	

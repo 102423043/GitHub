@@ -1,0 +1,93 @@
+<?component name="menuitem" extends="menuitem" autocheck="true" checkmark="true" ?>
+
+	<tabbox height="400px" style="padding: 20px">
+		<tabs>
+			<tab label="Install-Time 安全政策制定" iconSclass="icon-tag" />
+			<tab label="Run-Time 安全政策制定" iconSclass="icon-tag" />
+		</tabs>
+		<tabpanels>
+			<tabpanel>
+					<vlayout> <!-- icon-user, icon-arrow-right,  shopping-cart,tag,repeat-->
+				        <hlayout>
+				        	<combobox  width="100px" />
+				        	<combobox  width="100px" />
+				        	<combobox  width="100px" />
+							<menubar>
+								<menu label="Conditions">
+									<menupopup>
+										<menuitem label="New" onCheck="" />
+										<menuseparator />
+										<menuitem label="Open" onCheck="" />
+									</menupopup>
+								</menu>
+							</menubar>
+				        </hlayout>
+				        <!-- install-time 清單 -->
+				        <listbox>
+				            <auxhead>
+				                <auxheader colspan="4" iconSclass="icon-Posts"> Install-Time 安全政策清單</auxheader>
+				            </auxhead>
+				            <listhead>
+				                <listheader label="Allow/Deny" width="10%" align="center" />
+				                <listheader label="Application" width="20%" align="center" />
+				                <listheader label="Permission" width="20%" align="center" />
+				                <listheader label="Other conditions" width="50%" align="center" />
+				            </listhead>
+				            <template name="model" var="contributor">
+				                <listitem>
+				                    <listcell label="" />
+				                    <listcell label="" />
+				                    <listcell label="" />
+				                    <listcell label="" />
+				                </listitem>
+				            </template>
+				        </listbox>
+					</vlayout>
+			</tabpanel>
+			<tabpanel>
+					<vlayout>
+				        <hlayout>
+				        	<combobox width="100px" />
+				        	<textbox width="100px"></textbox>
+				        	<textbox width="80px"></textbox>
+				        	<textbox width="80px"></textbox>
+				        	<textbox width="100px"></textbox>
+							<menubar>
+								<menu label="Conditions">
+									<menupopup>
+										<menuitem label="New" onCheck="" />
+										<menuseparator />
+										<menuitem label="Open" onCheck="" />
+									</menupopup>
+								</menu>
+							</menubar>
+				        </hlayout>
+						<!-- run-time 清單 -->
+				        <listbox> 
+				            <auxhead>
+				                <auxheader colspan="6" iconSclass="icon-Posts"> Run-Time 安全政策清單</auxheader>
+				            </auxhead>
+				            <listhead>
+				                <listheader label="Allow/Deny" width="10%" align="center" />
+				                <listheader label="Source app" width="15%" align="center" />
+				                <listheader label="Type" width="10%" align="center" />
+				                <listheader label="Action" width="10%" align="center" />
+				                <listheader label="Destination app" width="15%" align="center" />
+				                <listheader label="Other conditions" width="40%" align="center" />
+				            </listhead>
+				            <template name="model">
+				                <listitem>
+				                    <listcell label="" />
+				                    <listcell label="" />
+				                    <listcell label="" />
+				                    <listcell label="" />
+				                    <listcell label="" />
+				                    <listcell label="" />
+				                </listitem>
+				            </template>
+				        </listbox>
+				        
+					</vlayout>
+			</tabpanel>
+		</tabpanels>
+	</tabbox>

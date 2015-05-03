@@ -1,0 +1,29 @@
+<window border="none"
+    apply="org.zkoss.bind.BindComposer"
+    viewModel="@id('MMvm') @init('viewmodel.MessageMgtViewModel')">
+    
+    <vlayout style="padding: 20px">
+    	<hbox>
+    		<textbox width="150px"></textbox>
+			<selectbox ><template name="model"></template></selectbox> 
+    		<button label="新增" onClick="" />
+    	</hbox>
+	    <listbox>
+			<auxhead>
+				<auxheader colspan="4" iconSclass="icon-Posts">訊息管理清單</auxheader>
+			</auxhead>
+			<listhead>
+				<listheader label="編號" sort="auto" />
+				<listheader label="訊息內容" sort="auto" />
+				<listheader label="類型" sort="auto" />
+				<listheader label="更新日期" sort="auto" />
+			</listhead>
+			<listitem>
+				<listcell label="" />
+				<listcell label="" />
+				<listcell label="" />
+				<listcell label="" />
+			</listitem>
+		</listbox>
+    </vlayout>
+</window>
