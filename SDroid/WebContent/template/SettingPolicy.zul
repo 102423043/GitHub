@@ -1,5 +1,7 @@
-<?component name="menuitem" extends="menuitem" autocheck="true" checkmark="true" ?>
-
+<window border="none"
+    apply="org.zkoss.bind.BindComposer"
+    viewModel="@id('SPvm') @init('viewmodel.SettingPolicyViewModel')">
+    
 	<tabbox height="400px" style="padding: 20px">
 		<tabs>
 			<tab label="Install-Time 安全政策制定" iconSclass="icon-tag" />
@@ -9,18 +11,31 @@
 			<tabpanel>
 					<vlayout> <!-- icon-user, icon-arrow-right,  shopping-cart,tag,repeat-->
 				        <hlayout>
-				        	<combobox  width="100px" />
-				        	<combobox  width="100px" />
-				        	<combobox  width="100px" />
+				        	<combobox id="cmbAccess" width="100px" selectedItem="@bind(SPvm.policy.access)" >
+								<comboitem label="Allow" value="allow" />
+								<comboitem label="Deny" value="deny" />
+				        	</combobox>
+				        	<combobox id="cmbApp" width="150px"
+				        		model="@load(SPvm.applications)" selectedItem="@bind(SPvm.policy.application)" >
+				        		<template name="model">
+				        			<comboitem label="@load(each)" />
+				        		</template>	
+				        	</combobox>
+				        	<combobox id="cmbPermission" width="200px"
+				        		model="@load(SPvm.permissions)" selectedItem="@bind(SPvm.policy.permission)" >
+				        		<template name="model">
+				        			<comboitem label="@load(each.permission)" />
+				        		</template>	
+				        	</combobox>
 							<menubar>
-								<menu label="Conditions">
+								<menu label="Conditions" width="150px">
 									<menupopup>
-										<menuitem label="New" onCheck="" />
+										<menuitem label="" onCheck="" />
 										<menuseparator />
-										<menuitem label="Open" onCheck="" />
 									</menupopup>
 								</menu>
 							</menubar>
+							<button label="新增" onClick="" />
 				        </hlayout>
 				        <!-- install-time 清單 -->
 				        <listbox>
@@ -47,17 +62,39 @@
 			<tabpanel>
 					<vlayout>
 				        <hlayout>
-				        	<combobox width="100px" />
-				        	<textbox width="100px"></textbox>
-				        	<textbox width="80px"></textbox>
-				        	<textbox width="80px"></textbox>
-				        	<textbox width="100px"></textbox>
+				        	<combobox id="cmbAccess2" width="100px" selectedItem="@bind(SPvm.policy.access)" >
+								<comboitem label="Allow" value="allow" />
+								<comboitem label="Deny" value="deny" />
+				        	</combobox>
+				        	<combobox id="cmbSourceApp" width="150px"
+				        		model="@load(SPvm.applications)" selectedItem="@bind(SPvm.policy.application)" >
+				        		<template name="model">
+				        			<comboitem label="@load(each)" />
+				        		</template>	
+				        	</combobox>
+				        	<combobox id="cmbType" width="150px"
+				        		model="@load(SPvm.types)" selectedItem="@bind(SPvm.policy.type)" >
+				        		<template name="model">
+				        			<comboitem label="@load(each)" />
+				        		</template>	
+				        	</combobox>
+				        	<combobox id="cmbAction" width="150px"
+				        		model="@load(SPvm.actions)" selectedItem="@bind(SPvm.policy.action)" >
+				        		<template name="model">
+				        			<comboitem label="@load(each)" />
+				        		</template>	
+				        	</combobox>
+				        	<combobox id="cmbDestinationApp" width="150px"
+				        		model="@load(SPvm.applications)" selectedItem="@bind(SPvm.policy.application)" >
+				        		<template name="model">
+				        			<comboitem label="@load(each)" />
+				        		</template>	
+				        	</combobox>
 							<menubar>
-								<menu label="Conditions">
+								<menu label="Conditions" width="150px">
 									<menupopup>
-										<menuitem label="New" onCheck="" />
+										<menuitem label="" onCheck="" />
 										<menuseparator />
-										<menuitem label="Open" onCheck="" />
 									</menupopup>
 								</menu>
 							</menubar>
@@ -91,3 +128,4 @@
 			</tabpanel>
 		</tabpanels>
 	</tabbox>
+</window>

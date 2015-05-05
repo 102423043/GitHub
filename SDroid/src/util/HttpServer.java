@@ -27,7 +27,7 @@ public class HttpServer extends HttpServlet {
 
 		PrintWriter output = response.getWriter();
 //		response.setContentType("text/html");
-		output.println("success!");
+		output.println("allow");
 		output.close();
 
 	}
