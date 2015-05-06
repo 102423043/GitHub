@@ -3,20 +3,32 @@ package viewmodel;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Application;
 import model.Permission;
 import model.Policy;
 
+import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
+import org.zkoss.zk.ui.Path;
+import org.zkoss.zk.ui.event.MouseEvent;
+import org.zkoss.zk.ui.select.annotation.Listen;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.Textbox;
+import org.zkoss.zul.impl.LabelElement;
 
-import util.LogInfo;
+
+
+
+import dao.ApplicationDao;
 import dao.PermissionDao;
 
 public class SettingPolicyViewModel {
 
 	private Policy policy;
 	private PermissionDao pDao;
+	private ApplicationDao aDao;
 	//Install-Time
-	private List<String> applications;
+	private List<Application> applications;
 	private List<Permission> permissions;
 	private List<String> conditions;
 	//Run-Time
@@ -28,8 +40,11 @@ public class SettingPolicyViewModel {
 	@Init
 	public void init(){
 		policy = new Policy();
+		
 		pDao = new PermissionDao();
-		applications = new ArrayList<String>();
+		aDao = new ApplicationDao();
+		
+		applications = new ArrayList<Application>();
 		permissions = new ArrayList<Permission>();
 		conditions = new ArrayList<String>();
 		types = new ArrayList<String>();
@@ -40,10 +55,25 @@ public class SettingPolicyViewModel {
 	}
 
 	public void loadData(){
-		//Permission
+
 		permissions = pDao.getAllList();
-//		LogInfo.info("permissions.size:", permissions.size());
+		applications = aDao.getAllList();
+
 	}
+	
+	@Command
+	public void insertPolicy(String type){
+		switch(type){
+		case "installTime":
+			
+			break;
+		case "runTime":
+			break;
+		}
+		
+	}
+	
+
 	
 	/**
 	 * Getter Object
@@ -52,11 +82,7 @@ public class SettingPolicyViewModel {
 		return policy;
 	}
 
-	public PermissionDao getpDao() {
-		return pDao;
-	}
-
-	public List<String> getApplications() {
+	public List<Application> getApplications() {
 		return applications;
 	}
 

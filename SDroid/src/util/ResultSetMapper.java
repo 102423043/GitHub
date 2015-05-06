@@ -5,10 +5,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.Converter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +25,7 @@ public class ResultSetMapper<T> {
 	public List<T> mapRersultSetToObject(ResultSet rs, Class outputClass) {
 		List<T> outputList = null;
 		try {
+			register();
 			// make sure resultset is not null
 			if (rs != null) {
 				// check if outputClass has 'Entity' annotation
@@ -36,7 +43,9 @@ public class ResultSetMapper<T> {
 									.getColumnName(_iterator + 1);
 							// reading the value of the SQL column
 							Object columnValue = rs.getObject(_iterator + 1);
-							// iterating over outputClass attributes to check if any attribute has 'Column' annotation with matching 'name' value
+							// iterating over outputClass attributes to check if
+							// any attribute has 'Column' annotation with
+							// matching 'name' value
 							for (Field field : fields) {
 								if (field.isAnnotationPresent(Column.class)) {
 									Column column = field
@@ -44,8 +53,9 @@ public class ResultSetMapper<T> {
 									if (column.name().equalsIgnoreCase(
 											columnName)
 											&& columnValue != null) {
-										BeanUtils.setProperty(bean, field
-												.getName(), columnValue);
+										BeanUtils.setProperty(bean,
+												field.getName(), columnValue);
+
 										break;
 									}
 								}
@@ -73,6 +83,28 @@ public class ResultSetMapper<T> {
 			e.printStackTrace();
 		}
 		return outputList;
-	}	
-	
+	}
+
+	private void register() {
+		ConvertUtils.register(new Converter() {
+
+			@Override
+			public Object convert(Class type, Object value) {
+
+				if (value == null) {
+					return null;
+				}
+				try {
+					Date date = null;
+					SimpleDateFormat df = new SimpleDateFormat(
+							"yyyy-MM-dd");
+					date = df.parse(value.toString());
+					return (T) date;
+				} catch (ParseException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}, Date.class);
+	}
+
 }
