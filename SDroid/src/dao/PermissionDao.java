@@ -22,11 +22,13 @@ public class PermissionDao {
 	private ResultSet rs = null; 
 	private PreparedStatement pst = null; 
 	private String sqlStr = "";
+	private LogInfo logInfo = null;
 	
 	private String tableName = "permission";
 	
 	public PermissionDao(){
 		con = new JDBCmysql().getConnection();
+		logInfo = new LogInfo();
 	}
 	
 	public Permission getListById(int pid){
@@ -39,7 +41,7 @@ public class PermissionDao {
 	    { 
 	      stat = con.createStatement(); 
 	      rs = stat.executeQuery(sqlStr); 
-	      LogInfo.info("getListById: %s", sqlStr);	
+	      logInfo.info("getListById: %s", sqlStr);	
 	      
 	      pojoList= resultSetMapper.mapRersultSetToObject(rs, Permission.class);
 	      
@@ -64,7 +66,7 @@ public class PermissionDao {
 	    { 
 	      stat = con.createStatement(); 
 	      rs = stat.executeQuery(sqlStr); 
-	      LogInfo.info("getAllList: %s", sqlStr);	
+	      logInfo.info("getAllList: %s", sqlStr);	
 	      
 	      pojoList= resultSetMapper.mapRersultSetToObject(rs, Permission.class);
 	      
@@ -102,7 +104,7 @@ public class PermissionDao {
 	  } 
 	 catch(SQLException e) 
 	  { 
-		 LogInfo.error("Close Exception : %s", e.toString());
+		 logInfo.error("Close Exception : %s", e.toString());
 	  } 
 	}
 }

@@ -5,15 +5,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import model.Application;
+import model.Policy;
 import util.JDBCmysql;
 import util.LogInfo;
 import util.ResultSetMapper;
 
-public class ApplicationDao {
+public class PolicyDao {
 
 	private JDBCmysql sql;
 	private Connection con = null; 
@@ -23,43 +25,49 @@ public class ApplicationDao {
 	private String sqlStr = "";
 	private LogInfo logInfo = null;
 	
-	private String tableName = "application";
+	private String tableName = "policy";
 	
-	public ApplicationDao(){
+	public PolicyDao(){
 		con = new JDBCmysql().getConnection();
 		logInfo = new LogInfo();
 	}
 	
-	public Application getListById(int aid){
+	public boolean insert(Policy policy){
+		boolean res = false;
+		SimpleDateFormat bartDateFormat = new SimpleDateFormat("yyyy-MM-dd");       
 		
-		List<Application> pojoList = new ArrayList<Application>();
-		ResultSetMapper<Application> resultSetMapper = new ResultSetMapper<Application>();
-		sqlStr = "select * from "+tableName+" as a where a.id = '"+aid+"' ";
+		String sqlStr = String.format("INSERT INTO "+tableName+
+				" (type,policy,create_time) VALUES ('%s','%s','%s')",
+				policy.getType(),policy.getPolicy(),bartDateFormat.format(new Date()));
 		
 	    try 
 	    { 
 	      stat = con.createStatement(); 
-	      rs = stat.executeQuery(sqlStr); 
-	      logInfo.info("getListById: %s", sqlStr);	
+	      int check = stat.executeUpdate(sqlStr); 
+	      System.out.println("insertSQL:"+sqlStr);	
 	      
-	      pojoList= resultSetMapper.mapRersultSetToObject(rs, Application.class);
+	      if(check !=0)
+	      {
+	    	  res = true;
+	      }
 	      
 	    } 
 	    catch(SQLException e) 
 	    { 
-	      System.out.println("getListById DropDB Exception :" + e.toString()); 
+	      System.out.println("insert DropDB Exception :" + e.toString()); 
 	    } 
 	    finally 
 	    { 
 	      Close(); 
-	    }	
-	    return pojoList.get(0);
+	    }		
+		
+		return res;		
+		
 	}
 	
-	public List<Application> getAllList(){
-		
-		List<Application> pojoList = new ArrayList<Application>();
-		ResultSetMapper<Application> resultSetMapper = new ResultSetMapper<Application>();
+	public List<Policy> getAllList(){
+		List<Policy> pojoList = new ArrayList<Policy>();
+		ResultSetMapper<Policy> resultSetMapper = new ResultSetMapper<Policy>();
 		sqlStr = "select * from "+tableName;
 		
 	    try 
@@ -68,7 +76,7 @@ public class ApplicationDao {
 	      rs = stat.executeQuery(sqlStr); 
 	      logInfo.info("getAllList: %s", sqlStr);	
 	      
-	      pojoList= resultSetMapper.mapRersultSetToObject(rs, Application.class);
+	      pojoList= resultSetMapper.mapRersultSetToObject(rs, Policy.class);
 	      
 	    } 
 	    catch(SQLException e) 
@@ -107,5 +115,4 @@ public class ApplicationDao {
 		 logInfo.error("Close Exception : %s", e.toString());
 	  } 
 	}
-	
 }

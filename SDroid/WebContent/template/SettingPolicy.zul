@@ -1,4 +1,4 @@
-<window border="none" apply="org.zkoss.bind.BindComposer"
+<window border="none" apply="org.zkoss.bind.BindComposer" id="spWin"
 	viewModel="@id('SPvm') @init('viewmodel.SettingPolicyViewModel')">
 
 	<tabbox height="400px" style="padding: 20px">
@@ -14,28 +14,29 @@
 							<hbox>
 								<label value="Access：" />
 								<combobox id="cmbAccess" width="80px"
-									selectedItem="@bind(SPvm.policy.access)">
+									selectedItem="@bind(SPvm.installPolicy.access)">
 									<comboitem label="Allow" value="allow" />
 									<comboitem label="Deny" value="deny" />
 								</combobox>
 								<separator spacing="10px" />
 								<label value="Application：" />
 								<combobox id="cmbApp" width="180px" model="@load(SPvm.applications)"
-									selectedItem="@bind(SPvm.policy.application)">
+									selectedItem="@bind(SPvm.installPolicy.application)">
 									<template name="model">
-										<comboitem label="@load(each.appLabel)" value="@load(each.id)" />
+										<comboitem label="@load(each)" value="@load(each)" />
 									</template>
 								</combobox>
 								<separator spacing="10px" />
 								<label value="Permission：" />
 								<combobox id="cmbPermission" width="230px"
-									model="@load(SPvm.permissions)" selectedItem="@bind(SPvm.policy.permission)">
+									model="@load(SPvm.permissions)" selectedItem="@bind(SPvm.installPolicy.permission)">
 									<template name="model">
-										<comboitem label="@load(each.permission)" value="@load(each.id)" />
+										<comboitem label="@load(each)" value="@load(each)" />
 									</template>
 								</combobox>
 							</hbox>
 							<hbox>
+								<!-- 此處可新增其他Conditions元件 -->
 								<label value="Condition：" />
 								<menubar autodrop="true">
 									<menu label="Conditions" width="150px">
@@ -49,37 +50,35 @@
 									</menu>
 								</menubar>
 								<separator spacing="10px" />
-								<box id="hboxCondition1" orient="horizontal"></box>
-								<box id="hboxCondition2" orient="horizontal"></box>
+								
+								<box id="hboxCondition1" orient="horizontal" visible="false">
+									<label value="min-version" />
+									<textbox width="100px" value="@save(SPvm.installPolicy.minVersion.value)" />
+								</box>
+								<box id="hboxCondition2" orient="horizontal" visible="false" >
+									<label value="permission-level" />
+									<combobox width="180px" selectedItem="@save(SPvm.installPolicy.permissionLevel.value)">
+										<comboitem label="normal" value="normal" />
+										<comboitem label="dangerous" value="dangerous" />
+										<comboitem label="signature" value="signature" />
+										<comboitem label="signatureOrSystem" value="signatureOrSystem" />
+									</combobox>
+								</box>
 								<zscript><![CDATA[ 
 								    void ConditionChecked(String item,Boolean check){
-								    	Label lb = new Label();
-								    	lb.setValue(item+":");
 								    	switch(item){
 											case "min-version":
 												if(check){
-													Textbox tb = new Textbox();
-													tb.setId("txtMinVersion");
-													tb.setWidth("100px");
-													hboxCondition1.appendChild(lb);
-													hboxCondition1.appendChild(tb);
+													hboxCondition1.setVisible(true);
 												}else{
-													hboxCondition1.getChildren().clear();
+													hboxCondition1.setVisible(false);
 												}
 												break;
 											case "permission-level":
 												if(check){
-													Combobox cb = new Combobox();
-													cb.setId("cbPermissionLevel");
-													cb.setWidth("180px");
-													cb.appendItem("normal");
-													cb.appendItem("dangerous");
-													cb.appendItem("signature");
-													cb.appendItem("signatureOrSystem");
-													hboxCondition2.appendChild(lb);
-													hboxCondition2.appendChild(cb);
+													hboxCondition2.setVisible(true);
 												}else{
-													hboxCondition2.getChildren().clear();
+													hboxCondition2.setVisible(false);
 												}
 												break;
 										}          
@@ -88,7 +87,7 @@
 							</hbox>
 						</vbox>
 						<separator spacing="10px" />
-						<button label="新增" onClick="" />
+						<button label="新增" onClick="@command('insertPolicy',mStr='installTime')" />
 					</hlayout>
 					<!-- install-time 清單 -->
 					<separator spacing="10px" />
@@ -124,23 +123,23 @@
 						<hbox>
 						<label value="Access：" />
 						<combobox id="cmbAccess2" width="80px"
-							selectedItem="@bind(SPvm.policy.access)">
+							>
 							<comboitem label="Allow" value="allow" />
 							<comboitem label="Deny" value="deny" />
 						</combobox>	
 						</hbox>				
 						<hbox>
 						<label value="Source Application：" />
-						<combobox id="cmbSourceApp" width="180px"
-							model="@load(SPvm.applications)" selectedItem="@bind(SPvm.policy.application)">
+						<combobox id="cmbSourceApp" width="180px" model="@load(SPvm.applications)"
+							 >
 							<template name="model">
-								<comboitem label="@load(each.appLabel)" />
+								<comboitem label="@load(each)" />
 							</template>
 						</combobox>
 						<separator spacing="10px" />
 						<label value="Interaction type：" />
 						<combobox id="cmbType" width="150px" model="@load(SPvm.types)"
-							selectedItem="@bind(SPvm.policy.interactionType)">
+							>
 							<template name="model">
 								<comboitem label="@load(each)" />
 							</template>
@@ -148,25 +147,25 @@
 						<separator spacing="10px" />
 						<label value="Action：" />
 						<combobox id="cmbAction" width="150px" model="@load(SPvm.actions)"
-							selectedItem="@bind(SPvm.policy.action)">
+							>
 							<template name="model">
 								<comboitem label="@load(each)" />
 							</template>
 						</combobox>
 						</hbox>
 						<hbox>
-						<label value="Destination Application：" />
-						<combobox id="cmbDestinationApp" width="180px"
-							model="@load(SPvm.applications)" selectedItem="@bind(SPvm.policy.destApplication)">
+						<label value="Destination Application：" /> 
+						<combobox id="cmbDestinationApp" width="180px" model="@load(SPvm.applications)"
+							 >
 							<template name="model">
-								<comboitem label="@load(each.appLabel)" />
+								<comboitem label="@load(each)" />
 							</template>
 						</combobox>
 						</hbox>
 						<hbox>
 						<label value="Condition：" />
 						<menubar>
-							<menu label="Conditions" width="150px" checkmark="true" autocheck="true">
+							<menu label="Conditions" width="150px">
 								<menupopup>
 									<menuitem label="sen-url" onCheck="" />
 								</menupopup>

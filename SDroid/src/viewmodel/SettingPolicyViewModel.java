@@ -4,14 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Application;
+import model.InstallTimePolicy;
 import model.Permission;
 import model.Policy;
 
+import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.zk.ui.Path;
 import org.zkoss.zk.ui.event.MouseEvent;
 import org.zkoss.zk.ui.select.annotation.Listen;
+import org.zkoss.zul.Box;
+import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.impl.LabelElement;
@@ -19,19 +23,35 @@ import org.zkoss.zul.impl.LabelElement;
 
 
 
+
+
+
+
+
+
+
+import util.LogInfo;
+import util.ParseXML;
 import dao.ApplicationDao;
 import dao.PermissionDao;
+import dao.PolicyDao;
 
 public class SettingPolicyViewModel {
 
+	//Model
 	private Policy policy;
+	private InstallTimePolicy installPolicy;
+	//Dao
 	private PermissionDao pDao;
 	private ApplicationDao aDao;
-	//Install-Time
-	private List<Application> applications;
-	private List<Permission> permissions;
+	private PolicyDao plDao;
+	//Util
+	private ParseXML parseXML;
+	private LogInfo logInfo;
+	//ListView
+	private List<String> applications;
+	private List<String> permissions;
 	private List<String> conditions;
-	//Run-Time
 	private List<String> types;
 	private List<String> actions;
 	private List<String> components;
@@ -40,12 +60,17 @@ public class SettingPolicyViewModel {
 	@Init
 	public void init(){
 		policy = new Policy();
+		installPolicy = new InstallTimePolicy();
 		
 		pDao = new PermissionDao();
 		aDao = new ApplicationDao();
+		plDao = new PolicyDao();
 		
-		applications = new ArrayList<Application>();
-		permissions = new ArrayList<Permission>();
+		parseXML = new ParseXML();
+		logInfo = new LogInfo();
+		
+		applications = new ArrayList<String>();
+		permissions = new ArrayList<String>();
 		conditions = new ArrayList<String>();
 		types = new ArrayList<String>();
 		actions = new ArrayList<String>();
@@ -56,15 +81,34 @@ public class SettingPolicyViewModel {
 
 	public void loadData(){
 
-		permissions = pDao.getAllList();
-		applications = aDao.getAllList();
+		List<Permission> perList = pDao.getAllList();
+		for(Permission per: perList){
+			permissions.add(per.getPermission());
+		}
+		List<Application> appList = aDao.getAllList();
+		for(Application app: appList){
+			applications.add(app.getAppLabel());
+		}
 
 	}
 	
+	public void getInstallPolicyList(){
+		
+	}
+	
 	@Command
-	public void insertPolicy(String type){
+	public void insertPolicy(@BindingParam("mStr")String type){
+		Policy policy;
+		
 		switch(type){
 		case "installTime":
+			String policyXML = parseXML.ObjParseToXML("installTime", installPolicy);
+//			logInfo.info("%s",policyXML);
+			policy = new Policy();
+			policy.setType(type);
+			policy.setPolicy(policyXML);
+			
+			plDao.insert(policy);
 			
 			break;
 		case "runTime":
@@ -76,17 +120,21 @@ public class SettingPolicyViewModel {
 
 	
 	/**
-	 * Getter Object
+	 * Setter & Getter Object
 	 * */
 	public Policy getPolicy() {
 		return policy;
 	}
 
-	public List<Application> getApplications() {
+	public InstallTimePolicy getInstallPolicy() {
+		return installPolicy;
+	}
+
+	public List<String> getApplications() {
 		return applications;
 	}
 
-	public List<Permission> getPermissions() {
+	public List<String> getPermissions() {
 		return permissions;
 	}
 
