@@ -91,25 +91,26 @@
 					</hlayout>
 					<!-- install-time 清單 -->
 					<separator spacing="10px" />
-					<listbox>
+					<listbox model="@load(SPvm.installTimePolicies)" mold="paging" pageSize="10" >
 						<auxhead>
 							<auxheader colspan="4" iconSclass="icon-Posts">
 								Install-Time 安全政策清單
 							</auxheader>
 						</auxhead>
 						<listhead>
-							<listheader label="Access" width="10%" align="center" />
-							<listheader label="Application" width="20%" align="center" />
-							<listheader label="Permission" width="20%" align="center" />
-							<listheader label="Other conditions" width="50%"
-								align="center" />
+							<listheader label="Access" sort="auto" width="10%" align="center" />
+							<listheader label="Application" sort="auto" width="20%" align="center" />
+							<listheader label="Permission" sort="auto" width="20%" align="center" />
+							<listheader label="Other conditions" sort="auto" width="50%" align="center" />
+							<listheader label="DateTime" sort="auto" width="20%" align="center" />
 						</listhead>
-						<template name="model" var="contributor">
+						<template name="model" var="policy">
 							<listitem>
-								<listcell label="" />
-								<listcell label="" />
-								<listcell label="" />
-								<listcell label="" />
+								<listcell label="@load(policy.access)" />
+								<listcell label="@load(policy.application)" />
+								<listcell label="@load(policy.permission)" />
+								<listcell label="@load(policy.minVersion)" />
+								<listcell label="@load(policy.createTime)" />
 							</listitem>
 						</template>
 					</listbox>

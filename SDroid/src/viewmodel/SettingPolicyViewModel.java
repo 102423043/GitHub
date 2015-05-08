@@ -55,7 +55,7 @@ public class SettingPolicyViewModel {
 	private List<String> types;
 	private List<String> actions;
 	private List<String> components;
-	
+	private List<InstallTimePolicy> installTimePolicies;
 	
 	@Init
 	public void init(){
@@ -75,6 +75,7 @@ public class SettingPolicyViewModel {
 		types = new ArrayList<String>();
 		actions = new ArrayList<String>();
 		components = new ArrayList<String>();
+		installTimePolicies = new ArrayList<InstallTimePolicy>();
 		
 		loadData();
 	}
@@ -90,9 +91,17 @@ public class SettingPolicyViewModel {
 			applications.add(app.getAppLabel());
 		}
 
+		getInstallPolicyList();
 	}
 	
 	public void getInstallPolicyList(){
+		List<Policy> pList = plDao.getAllList();
+		for(Policy p: pList){
+			InstallTimePolicy itp = (InstallTimePolicy)parseXML.XMLParseToObj(p.getPolicy());
+			itp.setId(p.getId());
+			itp.setCreateTime(p.getCreateTime());
+			installTimePolicies.add(itp);
+		}
 		
 	}
 	
@@ -128,6 +137,10 @@ public class SettingPolicyViewModel {
 
 	public InstallTimePolicy getInstallPolicy() {
 		return installPolicy;
+	}
+
+	public List<InstallTimePolicy> getInstallTimePolicies() {
+		return installTimePolicies;
 	}
 
 	public List<String> getApplications() {

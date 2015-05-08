@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class InstallTimePolicy {
 
+	private Integer id;
 	private String access;
 	private String application;
 	private String permission;
@@ -18,6 +19,14 @@ public class InstallTimePolicy {
 	}
 	
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
 	public String getAccess() {
 		return access;
 	}

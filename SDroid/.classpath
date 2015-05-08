@@ -16,5 +16,6 @@
 	<classpathentry kind="lib" path="C:/Program Files/eclipse/plugins/AXMLPrinter2.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/eclipse/plugins/protobuf-java-2.4.1.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/eclipse/plugins/AndroidMarketApi.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/MySQL/mysql-connector-java-5.1.28/mysql-connector-java-5.1.28-bin.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
