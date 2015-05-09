@@ -27,28 +27,32 @@ public class IndexViewModel{
 	@Wire("#pageContent")
 	Include pageContent;
 	
-	@Init
-	public void init(){
-	}
 
+	/**
+	 * 功能: 導入至指定的頁面
+	 * header: 該指定頁面的Header
+	 * */
 	@Command
 	public void goToIndexPage(@BindingParam("hStr") String header){
 		title.setValue(header);
 		subTitle.setValue(header);
 		pageContent.setSrc("/template/IndexPage.zul");
-		
-		
 	}
 	
 	@Command
-	public void goToSettingPolicy(@BindingParam("hStr") String header){
+	public void goToSettingInstallTimePolicy(@BindingParam("hStr") String header){
 		title.setValue(header);
 		subTitle.setValue(header);
 		pageContent.setSrc("/template/SettingPolicy.zul");
 		
-	
 		//showNotify("test", pageContent);
+	}
 	
+	@Command
+	public void goToSettingRunTimePolicy(@BindingParam("hStr") String header){
+		title.setValue(header);
+		subTitle.setValue(header);
+		pageContent.setSrc("/template/SettingRunTimePolicy.zul");
 	}
 	
 	@Command
@@ -65,14 +69,11 @@ public class IndexViewModel{
 		pageContent.setSrc("/template/MessageMgt.zul");
 	}
 
-	/* Getter & Setter */
 	
-	
-	
+		
 	private void showNotify(String msg, Component ref) {
 	   Clients.showNotification(msg, "info", ref, "end_center", 2000);
 	}
-	
 	
 	@AfterCompose
 	public void afterCompose(@ContextParam(ContextType.VIEW) Component view){

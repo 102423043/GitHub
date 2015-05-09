@@ -1,21 +1,24 @@
 package model;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
+@XStreamAlias("InstallTimePolicy")
 public class InstallTimePolicy {
 
 	private Integer id;
 	private String access;
 	private String application;
 	private String permission;
-	private Condition minVersion;
-	private Condition permissionLevel;
-	private Date modifyTime;
-	private Date createTime;
+	private List<Condition> conditions;
+	private String conditionStr;
+
+	private String createTime;
 	
 	public InstallTimePolicy(){
-		minVersion = new Condition();
-		permissionLevel = new Condition();
+		conditions = new ArrayList();
 	}
 	
 
@@ -50,42 +53,44 @@ public class InstallTimePolicy {
 	public void setPermission(String permission) {
 		this.permission = permission;
 	}
-	
 
-	public Condition getMinVersion() {
-		return minVersion;
+
+	public List<Condition> getConditions() {
+		return conditions;
 	}
 
 
-	public void setMinVersion(Condition minVersion) {
-		this.minVersion = minVersion;
+	public void setConditions(List<Condition> conditions) {
+		this.conditions = conditions;
 	}
 
 
-	public Condition getPermissionLevel() {
-		return permissionLevel;
+	public String getCreateTime() {
+		return  createTime;
 	}
 
-
-	public void setPermissionLevel(Condition permissionLevel) {
-		this.permissionLevel = permissionLevel;
-	}
-
-
-	public Date getModifyTime() {
-		return modifyTime;
-	}
-
-	public void setModifyTime(Date modifyTime) {
-		this.modifyTime = modifyTime;
-	}
-
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
+	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
+	}
+
+
+	public String getConditionStr() {
+		if(conditions.size()>0){
+			for(int i =0; i<conditions.size(); i++){
+				Condition condition = conditions.get(i);
+				if(i == conditions.size()-1){
+					conditionStr+=condition.getName()+":"+condition.getValue();
+					break;
+				}
+				conditionStr+=condition.getName()+":"+condition.getValue()+" , ";
+			}
+		}
+		return conditionStr;
+	}
+
+
+	public void setConditionStr(String conditionStr) {
+		this.conditionStr = conditionStr;
 	}
 	
 	

@@ -1,9 +1,11 @@
 package viewmodel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import model.Application;
+import model.Condition;
 import model.InstallTimePolicy;
 import model.Permission;
 import model.Policy;
@@ -20,15 +22,8 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.impl.LabelElement;
 
-
-
-
-
-
-
-
-
-
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 import util.LogInfo;
 import util.ParseXML;
@@ -38,17 +33,19 @@ import dao.PolicyDao;
 
 public class SettingPolicyViewModel {
 
-	//Model
+	// Model
 	private Policy policy;
 	private InstallTimePolicy installPolicy;
-	//Dao
+	private Condition minVersion;
+	private Condition permissionLevel;
+	// Dao
 	private PermissionDao pDao;
 	private ApplicationDao aDao;
 	private PolicyDao plDao;
-	//Util
+	// Util
 	private ParseXML parseXML;
 	private LogInfo logInfo;
-	//ListView
+	// ListView
 	private List<String> applications;
 	private List<String> permissions;
 	private List<String> conditions;
@@ -56,19 +53,24 @@ public class SettingPolicyViewModel {
 	private List<String> actions;
 	private List<String> components;
 	private List<InstallTimePolicy> installTimePolicies;
-	
+
+	/**
+	 * 功能: 初始化設定
+	 * */
 	@Init
-	public void init(){
+	public void init() {
 		policy = new Policy();
 		installPolicy = new InstallTimePolicy();
-		
+		minVersion = new Condition();
+		permissionLevel = new Condition();
+
 		pDao = new PermissionDao();
 		aDao = new ApplicationDao();
 		plDao = new PolicyDao();
-		
+
 		parseXML = new ParseXML();
 		logInfo = new LogInfo();
-		
+
 		applications = new ArrayList<String>();
 		permissions = new ArrayList<String>();
 		conditions = new ArrayList<String>();
@@ -76,60 +78,67 @@ public class SettingPolicyViewModel {
 		actions = new ArrayList<String>();
 		components = new ArrayList<String>();
 		installTimePolicies = new ArrayList<InstallTimePolicy>();
-		
+
 		loadData();
 	}
 
-	public void loadData(){
+	public void loadData() {
 
 		List<Permission> perList = pDao.getAllList();
-		for(Permission per: perList){
+		for (Permission per : perList) {
 			permissions.add(per.getPermission());
 		}
 		List<Application> appList = aDao.getAllList();
-		for(Application app: appList){
+		for (Application app : appList) {
 			applications.add(app.getAppLabel());
 		}
 
 		getInstallPolicyList();
 	}
-	
-	public void getInstallPolicyList(){
-		List<Policy> pList = plDao.getAllList();
-		for(Policy p: pList){
-			InstallTimePolicy itp = (InstallTimePolicy)parseXML.XMLParseToObj(p.getPolicy());
-			itp.setId(p.getId());
-			itp.setCreateTime(p.getCreateTime());
-			installTimePolicies.add(itp);
-		}
-		
-	}
-	
-	@Command
-	public void insertPolicy(@BindingParam("mStr")String type){
-		Policy policy;
-		
-		switch(type){
-		case "installTime":
-			String policyXML = parseXML.ObjParseToXML("installTime", installPolicy);
-//			logInfo.info("%s",policyXML);
-			policy = new Policy();
-			policy.setType(type);
-			policy.setPolicy(policyXML);
-			
-			plDao.insert(policy);
-			
-			break;
-		case "runTime":
-			break;
-		}
-		
-	}
-	
 
-	
 	/**
-	 * Setter & Getter Object
+	 * 功能: 取得目前最新的 Install-time  Policies 清單
+	 * */
+	public void getInstallPolicyList() {
+		List<Policy> pList = plDao.getAllList("installTime");
+		if (pList != null) {
+			for (Policy p : pList) {
+				logInfo.info("%s", p.getPolicy());
+				InstallTimePolicy itp = (InstallTimePolicy) parseXML
+						.XMLParseToInstallObj(p.getPolicy());
+				itp.setId(p.getId());
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+				itp.setCreateTime(sdf.format(p.getCreateTime()));
+				installTimePolicies.add(itp);
+			}
+		}
+	}
+
+	/**
+	 * 功能: 新增安全政策
+	 * */
+	@Command
+	public void insertPolicy() {
+		Policy policy;
+
+		minVersion.setName("minVersion");
+		permissionLevel.setName("permissionLevel");
+		installPolicy.getConditions().add(minVersion);
+		installPolicy.getConditions().add(permissionLevel);
+
+		String policyXML = parseXML.InstallObjParseToXML(installPolicy);
+		policy = new Policy();
+		policy.setType("installTime");
+		policy.setPolicy(policyXML);
+
+		plDao.insert(policy);
+
+		getInstallPolicyList();
+
+	}
+
+	/**
+	 * Setter & Getter 物件
 	 * */
 	public Policy getPolicy() {
 		return policy;
@@ -137,6 +146,14 @@ public class SettingPolicyViewModel {
 
 	public InstallTimePolicy getInstallPolicy() {
 		return installPolicy;
+	}
+
+	public Condition getMinVersion() {
+		return minVersion;
+	}
+
+	public Condition getPermissionLevel() {
+		return permissionLevel;
 	}
 
 	public List<InstallTimePolicy> getInstallTimePolicies() {
@@ -166,6 +183,5 @@ public class SettingPolicyViewModel {
 	public List<String> getComponents() {
 		return components;
 	}
-	
-	
+
 }

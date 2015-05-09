@@ -1,70 +1,70 @@
-<window border="none" apply="org.zkoss.bind.BindComposer" id="spWin"
-	viewModel="@id('SPvm') @init('viewmodel.SettingPolicyViewModel')">
 
-	<tabbox height="400px" style="padding: 20px">
-		<tabs>
-			<tab label="Install-Time 安全政策制定" iconSclass="icon-tag" />
-			<tab label="Run-Time 安全政策制定" iconSclass="icon-tag" />
-		</tabs>
-		<tabpanels>
-			<tabpanel>
-				<vlayout> <!-- icon-user, icon-arrow-right, shopping-cart,tag,repeat -->
-					<hlayout>
-						<vbox>
-							<hbox>
-								<label value="Access：" />
-								<combobox id="cmbAccess" width="80px"
-									selectedItem="@bind(SPvm.installPolicy.access)">
-									<comboitem label="Allow" value="allow" />
-									<comboitem label="Deny" value="deny" />
+<tabbox height="400px" style="padding: 20px" apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('SPvm') @init('viewmodel.SettingPolicyViewModel')">
+	<tabs>
+		<tab label="Install-Time 安全政策制定" iconSclass="icon-tag" />
+	</tabs>
+	<tabpanels>
+		<tabpanel>
+			<vlayout>
+				<hlayout>
+					<vbox>
+						<hbox>
+							<label value="Access：" />
+							<combobox id="cmbAccess" width="80px"
+								selectedItem="@bind(SPvm.installPolicy.access)">
+								<comboitem label="Allow" value="allow" />
+								<comboitem label="Deny" value="deny" />
+							</combobox>
+							<separator spacing="10px" />
+							<label value="Application：" />
+							<combobox id="cmbApp" width="180px" model="@load(SPvm.applications)"
+								selectedItem="@bind(SPvm.installPolicy.application)">
+								<template name="model">
+									<comboitem label="@load(each)" value="@load(each)" />
+								</template>
+							</combobox>
+							<separator spacing="10px" />
+							<label value="Permission：" />
+							<combobox id="cmbPermission" width="230px"
+								model="@load(SPvm.permissions)" selectedItem="@bind(SPvm.installPolicy.permission)">
+								<template name="model">
+									<comboitem label="@load(each)" value="@load(each)" />
+								</template>
+							</combobox>
+						</hbox>
+						<hbox>
+							<!-- Start 此處可新增其他Conditions元件 -->
+							<label value="Condition：" />
+							<menubar autodrop="true">
+								<menu label="Conditions" width="150px">
+									<menupopup>
+										<menuitem label="min-version" checkmark="true"
+											autocheck="true"
+											onCheck="ConditionChecked(self.getLabel(),self.isChecked())" />
+										<menuseparator />
+										<menuitem label="permission-level" checkmark="true"
+											autocheck="true"
+											onCheck="ConditionChecked(self.getLabel(),self.isChecked())" />
+									</menupopup>
+								</menu>
+							</menubar>
+							<separator spacing="10px" />
+
+							<box id="hboxCondition1" orient="horizontal" visible="false">
+								<label value="min-version" />
+								<textbox width="100px" value="@save(SPvm.minVersion.value)" />
+							</box>
+							<box id="hboxCondition2" orient="horizontal" visible="false">
+								<label value="permission-level" />
+								<combobox width="180px" selectedItem="@save(SPvm.permissionLevel.value)">
+									<comboitem label="normal" value="normal" />
+									<comboitem label="dangerous" value="dangerous" />
+									<comboitem label="signature" value="signature" />
+									<comboitem label="signatureOrSystem" value="signatureOrSystem" />
 								</combobox>
-								<separator spacing="10px" />
-								<label value="Application：" />
-								<combobox id="cmbApp" width="180px" model="@load(SPvm.applications)"
-									selectedItem="@bind(SPvm.installPolicy.application)">
-									<template name="model">
-										<comboitem label="@load(each)" value="@load(each)" />
-									</template>
-								</combobox>
-								<separator spacing="10px" />
-								<label value="Permission：" />
-								<combobox id="cmbPermission" width="230px"
-									model="@load(SPvm.permissions)" selectedItem="@bind(SPvm.installPolicy.permission)">
-									<template name="model">
-										<comboitem label="@load(each)" value="@load(each)" />
-									</template>
-								</combobox>
-							</hbox>
-							<hbox>
-								<!-- 此處可新增其他Conditions元件 -->
-								<label value="Condition：" />
-								<menubar autodrop="true">
-									<menu label="Conditions" width="150px">
-										<menupopup>
-											<menuitem label="min-version" checkmark="true"
-												autocheck="true" onCheck="ConditionChecked(self.getLabel(),self.isChecked())" />
-											<menuseparator />
-											<menuitem label="permission-level" checkmark="true"
-												autocheck="true" onCheck="ConditionChecked(self.getLabel(),self.isChecked())" />
-										</menupopup>
-									</menu>
-								</menubar>
-								<separator spacing="10px" />
-								
-								<box id="hboxCondition1" orient="horizontal" visible="false">
-									<label value="min-version" />
-									<textbox width="100px" value="@save(SPvm.installPolicy.minVersion.value)" />
-								</box>
-								<box id="hboxCondition2" orient="horizontal" visible="false" >
-									<label value="permission-level" />
-									<combobox width="180px" selectedItem="@save(SPvm.installPolicy.permissionLevel.value)">
-										<comboitem label="normal" value="normal" />
-										<comboitem label="dangerous" value="dangerous" />
-										<comboitem label="signature" value="signature" />
-										<comboitem label="signatureOrSystem" value="signatureOrSystem" />
-									</combobox>
-								</box>
-								<zscript><![CDATA[ 
+							</box>
+							<zscript><![CDATA[ 
 								    void ConditionChecked(String item,Boolean check){
 								    	switch(item){
 											case "min-version":
@@ -84,131 +84,44 @@
 										}          
 								    }     
 								]]></zscript>
-							</hbox>
-						</vbox>
-						<separator spacing="10px" />
-						<button label="新增" onClick="@command('insertPolicy',mStr='installTime')" />
-					</hlayout>
-					<!-- install-time 清單 -->
+							<!-- End 此處可新增其他Conditions元件 -->
+						</hbox>
+					</vbox>
 					<separator spacing="10px" />
-					<listbox model="@load(SPvm.installTimePolicies)" mold="paging" pageSize="10" >
-						<auxhead>
-							<auxheader colspan="4" iconSclass="icon-Posts">
-								Install-Time 安全政策清單
-							</auxheader>
-						</auxhead>
-						<listhead>
-							<listheader label="Access" sort="auto" width="10%" align="center" />
-							<listheader label="Application" sort="auto" width="20%" align="center" />
-							<listheader label="Permission" sort="auto" width="20%" align="center" />
-							<listheader label="Other conditions" sort="auto" width="50%" align="center" />
-							<listheader label="DateTime" sort="auto" width="20%" align="center" />
-						</listhead>
-						<template name="model" var="policy">
-							<listitem>
-								<listcell label="@load(policy.access)" />
-								<listcell label="@load(policy.application)" />
-								<listcell label="@load(policy.permission)" />
-								<listcell label="@load(policy.minVersion)" />
-								<listcell label="@load(policy.createTime)" />
-							</listitem>
-						</template>
-					</listbox>
-				</vlayout>
-			</tabpanel>
-			<tabpanel>
-				<vlayout>
-					<hlayout>
-						<!-- run-time 安全政策 -->
-						<vbox>
-						<hbox>
-						<label value="Access：" />
-						<combobox id="cmbAccess2" width="80px"
-							>
-							<comboitem label="Allow" value="allow" />
-							<comboitem label="Deny" value="deny" />
-						</combobox>	
-						</hbox>				
-						<hbox>
-						<label value="Source Application：" />
-						<combobox id="cmbSourceApp" width="180px" model="@load(SPvm.applications)"
-							 >
-							<template name="model">
-								<comboitem label="@load(each)" />
-							</template>
-						</combobox>
-						<separator spacing="10px" />
-						<label value="Interaction type：" />
-						<combobox id="cmbType" width="150px" model="@load(SPvm.types)"
-							>
-							<template name="model">
-								<comboitem label="@load(each)" />
-							</template>
-						</combobox>
-						<separator spacing="10px" />
-						<label value="Action：" />
-						<combobox id="cmbAction" width="150px" model="@load(SPvm.actions)"
-							>
-							<template name="model">
-								<comboitem label="@load(each)" />
-							</template>
-						</combobox>
-						</hbox>
-						<hbox>
-						<label value="Destination Application：" /> 
-						<combobox id="cmbDestinationApp" width="180px" model="@load(SPvm.applications)"
-							 >
-							<template name="model">
-								<comboitem label="@load(each)" />
-							</template>
-						</combobox>
-						</hbox>
-						<hbox>
-						<label value="Condition：" />
-						<menubar>
-							<menu label="Conditions" width="150px">
-								<menupopup>
-									<menuitem label="sen-url" onCheck="" />
-								</menupopup>
-							</menu>
-						</menubar>
-						<separator spacing="10px" />
-						</hbox>
-						 </vbox>
-						<separator spacing="10px" />
-						<button label="新增" onClick="" />
-					</hlayout>
-					<!-- run-time 清單 -->
-					<separator spacing="10px" />
-					<listbox>
-						<auxhead>
-							<auxheader colspan="6" iconSclass="icon-Posts">
-								Run-Time 安全政策清單
-							</auxheader>
-						</auxhead>
-						<listhead>
-							<listheader label="Allow/Deny" width="10%" align="center" />
-							<listheader label="Source app" width="15%" align="center" />
-							<listheader label="Type" width="10%" align="center" />
-							<listheader label="Action" width="10%" align="center" />
-							<listheader label="Destination app" width="15%" align="center" />
-							<listheader label="Other conditions" width="40%"
-								align="center" />
-						</listhead>
-						<template name="model">
-							<listitem>
-								<listcell label="" />
-								<listcell label="" />
-								<listcell label="" />
-								<listcell label="" />
-								<listcell label="" />
-								<listcell label="" />
-							</listitem>
-						</template>
-					</listbox>
-
-				</vlayout>
-			</tabpanel>
-		</tabpanels>
-	</tabbox>
-</window>
+					<button label="新增" onClick="@command('insertPolicy')" />
+				</hlayout>
+				<!-- install-time 清單 -->
+				<separator spacing="10px" />
+				<listbox model="@load(SPvm.installTimePolicies)" mold="paging"
+					pageSize="10">
+					<auxhead>
+						<auxheader colspan="5" iconSclass="icon-Posts">
+							Install-Time 安全政策清單
+						</auxheader>
+					</auxhead>
+					<listhead>
+						<listheader label="Access" sort="auto" width="10%"
+							align="center" />
+						<listheader label="Application" sort="auto" width="20%"
+							align="center" />
+						<listheader label="Permission" sort="auto" width="20%"
+							align="center" />
+						<listheader label="Other conditions" sort="auto" width="40%"
+							align="center" />
+						<listheader label="DateTime" sort="auto" width="10%"
+							align="center" />
+					</listhead>
+					<template name="model" var="policy">
+						<listitem>
+							<listcell label="@load(policy.access)" />
+							<listcell label="@load(policy.application)" />
+							<listcell label="@load(policy.permission)" />
+							<listcell label="@load(policy.conditionStr)" />
+							<listcell label="@load(policy.createTime)" />
+						</listitem>
+					</template>
+				</listbox>
+			</vlayout>
+		</tabpanel>
+	</tabpanels>
+</tabbox>

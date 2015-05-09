@@ -1,0 +1,121 @@
+
+<tabbox height="400px" style="padding: 20px" apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('SRTPvm') @init('viewmodel.SettingRunTimePolicyViewModel')">
+	<tabs>
+		<tab label="Run-time Policy" iconSclass="icon-tag" />
+		<tab label="App Policy" iconSclass="icon-tag" />
+	</tabs>
+	<tabpanels>
+		<tabpanel>
+			<vlayout>
+				<separator spacing="10px" />
+				<hlayout>
+					<!-- Run-time Policy 安全政策 -->
+					<label value="Access：" />
+					<combobox id="cmbAccess" width="80px"
+						selectedItem="@save(SRTPvm.runTimePolicy.access)">
+						<comboitem label="Allow" value="allow" />
+						<comboitem label="Deny" value="deny" />
+					</combobox>
+					<separator spacing="10px" />
+					<label value="Source Application：" />
+					<combobox id="cmbSourceApp" width="200px"
+						model="@load(SRTPvm.applications)" selectedItem="@save(SRTPvm.runTimePolicy.sourceApplication)">
+						<template name="model">
+							<comboitem label="@load(each)" />
+						</template>
+					</combobox>
+					<separator spacing="10px" />
+					<label value="Destination Application：" />
+					<combobox id="cmbDestApp" width="200px"
+						model="@load(SRTPvm.applications)" selectedItem="@save(SRTPvm.runTimePolicy.destinationApplication)">
+						<template name="model">
+							<comboitem label="@load(each)" />
+						</template>
+					</combobox>
+					<separator spacing="10px" />
+					<button label="新增" sclass="btn-primary btn-mini"
+						onClick="@command('insertPolicy',mStr='RunTimePolicy')" />
+				</hlayout>
+				<!-- Run-time 清單 -->
+				<separator spacing="10px" />
+				<listbox model="@load(SRTPvm.runTimePolicies)" mold="paging"
+					pageSize="10" width="1000px">
+					<auxhead>
+						<auxheader colspan="4" iconSclass="icon-Posts">
+							Run-time 安全政策清單
+						</auxheader>
+					</auxhead>
+					<listhead>
+						<listheader label="Access" sort="auto" width="10%"
+							align="center" />
+						<listheader label="Source Application" sort="auto"
+							width="30%" align="center" />
+						<listheader label="Destination Application" sort="auto"
+							width="30%" align="center" />
+						<listheader label="DateTime" sort="auto" width="10%"
+							align="center" />
+					</listhead>
+					<template name="model" var="policy">
+						<listitem>
+							<listcell label="@load(policy.access)" />
+							<listcell label="@load(policy.sourceApplication)" />
+							<listcell label="@load(policy.destinationApplication)" />
+							<listcell label="@load(policy.createTime)" />
+						</listitem>
+					</template>
+				</listbox>
+			</vlayout>
+		</tabpanel>
+		<tabpanel>
+			<vlayout>
+				<separator spacing="10px" />
+				<hlayout>
+					<!-- App Policy 安全政策 -->
+					<label value="Application：" />
+					<combobox id="cmbApp" width="200px" model="@load(SRTPvm.applications)"
+						selectedItem="@save(SRTPvm.appPolicy.application)">
+						<template name="model">
+							<comboitem label="@load(each)" />
+						</template>
+					</combobox>
+					<checkbox label="isRead" onCheck="@save(SRTPvm.appPolicy.read)" />
+					<separator spacing="10px" />
+					<checkbox label="isWrite" onCheck="@save(SRTPvm.appPolicy.write)" />
+					<separator spacing="10px" />
+					<checkbox label="isExecute" onCheck="@save(SRTPvm.appPolicy.execute)" />
+					<separator spacing="10px" />
+					<button label="新增" sclass="btn-primary btn-mini"
+						onClick="@command('insertPolicy',mStr='AppPolicy')" />
+				</hlayout>
+				<!--App Policy 清單 -->
+				<separator spacing="10px" />
+				<listbox model="@load(SRTPvm.appPolicies)" mold="paging"
+					pageSize="10" width="1000px">
+					<auxhead>
+						<auxheader colspan="5" iconSclass="icon-Posts">
+							App Policy 安全政策清單
+						</auxheader>
+					</auxhead>
+					<listhead>
+						<listheader label="Application" width="30%" align="center" />
+						<listheader label="isRead" width="10%" align="center" />
+						<listheader label="isWrite" width="10%" align="center" />
+						<listheader label="isExecute" width="10%" align="center" />
+						<listheader label="DateTime" width="20%" align="center" />
+					</listhead>
+					<template name="model" var="policy">
+						<listitem>
+							<listcell label="@load(policy.application)" />
+							<listcell label="@load(policy.isRead)" />
+							<listcell label="@load(policy.isWrite)" />
+							<listcell label="@load(policy.isExecute)" />
+							<listcell label="@load(policy.createTime)" />
+						</listitem>
+					</template>
+				</listbox>
+
+			</vlayout>
+		</tabpanel>
+	</tabpanels>
+</tabbox>

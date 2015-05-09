@@ -65,11 +65,11 @@ public class PolicyDao {
 		
 	}
 	
-	public List<Policy> getAllList(){
+	public List<Policy> getAllList(String type){
 		List<Policy> pojoList = new ArrayList<Policy>();
 		ResultSetMapper<Policy> resultSetMapper = new ResultSetMapper<Policy>();
-		sqlStr = "select * from "+tableName;
-		
+		sqlStr = "select * from "+tableName+" ";
+		sqlStr +="where type='"+type+"'";
 	    try 
 	    { 
 	      stat = con.createStatement(); 
