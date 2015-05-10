@@ -82,7 +82,10 @@ public class SettingPolicyViewModel {
 
 		loadData();
 	}
-
+	
+	/**
+	 * 功能: 當頁面初始化後，載入清單資料
+	 * */
 	public void loadData() {
 
 		List<Permission> perList = pDao.getAllList();
