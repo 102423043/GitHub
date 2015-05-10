@@ -65,6 +65,35 @@ public class PolicyDao {
 		
 	}
 	
+	public boolean removeById(String id){
+		boolean res = false;   
+		
+		String sqlStr = "DELETE FROM "+tableName+" WHERE id="+id;
+		
+	    try 
+	    { 
+	      stat = con.createStatement(); 
+	      int check = stat.executeUpdate(sqlStr); 
+	      System.out.println("removeSQL:"+sqlStr);	
+	      
+	      if(check !=0)
+	      {
+	    	  res = true;
+	      }
+	      
+	    } 
+	    catch(SQLException e) 
+	    { 
+	      System.out.println("removeById DropDB Exception :" + e.toString()); 
+	    } 
+	    finally 
+	    { 
+	      Close(); 
+	    }		
+		
+		return res;	
+	}
+	
 	public List<Policy> getAllList(String type){
 		List<Policy> pojoList = new ArrayList<Policy>();
 		ResultSetMapper<Policy> resultSetMapper = new ResultSetMapper<Policy>();

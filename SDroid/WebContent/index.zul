@@ -1,10 +1,6 @@
 <?page title="SDroid - Security Policies Platform"?>
-<?component name="button" extends="button" width="44px" height="44px"?>
-<?link rel="stylesheet" type="text/css"	href="/bootstrap/css/bootstrap.css" ?>
 <?link rel="stylesheet" type="text/css" href="/css/index.css.dsp" ?>
-<?link rel="stylesheet" type="text/css" href="/css/user-nav.css.dsp" ?>
 <?link rel="stylesheet" type="text/css" href="/css/sidebar.css.dsp" ?>
-<?link rel="stylesheet" type="text/css" href="/css/search.css.dsp" ?>
 <?link rel="stylesheet" type="text/css" href="/css/content-header.css.dsp" ?>
 <?link id="theme" rel="stylesheet" type="text/css" href="/css/grey.css.dsp" ?>
 <zk>

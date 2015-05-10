@@ -19,6 +19,7 @@ import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zul.Box;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.impl.LabelElement;
 
@@ -77,7 +78,7 @@ public class SettingPolicyViewModel {
 		types = new ArrayList<String>();
 		actions = new ArrayList<String>();
 		components = new ArrayList<String>();
-		installTimePolicies = new ArrayList<InstallTimePolicy>();
+		installTimePolicies = new ListModelList<InstallTimePolicy>();
 
 		loadData();
 	}
@@ -102,6 +103,7 @@ public class SettingPolicyViewModel {
 	public void getInstallPolicyList() {
 		List<Policy> pList = plDao.getAllList("installTime");
 		if (pList != null) {
+			installTimePolicies.clear();
 			for (Policy p : pList) {
 				logInfo.info("%s", p.getPolicy());
 				InstallTimePolicy itp = (InstallTimePolicy) parseXML
@@ -132,11 +134,21 @@ public class SettingPolicyViewModel {
 		policy.setPolicy(policyXML);
 
 		plDao.insert(policy);
-
 		getInstallPolicyList();
 
 	}
 
+	/**
+	 * 功能: 刪除安全政策
+	 * */
+	@Command
+	public void removePolicy(@BindingParam("mStr")String id) {
+		
+		plDao.removeById(id);
+		getInstallPolicyList();
+	}
+	
+	
 	/**
 	 * Setter & Getter 物件
 	 * */

@@ -8,11 +8,10 @@ public class AppPolicy {
 	private Integer id;
 	private String label;
 	private String application;
-	private boolean isRead;
-	private boolean isWrite;
-	private boolean isExecute;
+	private boolean read;
+	private boolean write;
+	private boolean execute;
 	private String createTime;
-	
 	
 	
 	public Integer getId() {
@@ -34,31 +33,28 @@ public class AppPolicy {
 		this.application = application;
 	}
 	public boolean isRead() {
-		return isRead;
+		return read;
 	}
-	public void setRead(boolean isRead) {
-		this.isRead = isRead;
+	public void setRead(boolean read) {
+		this.read = read;
 	}
 	public boolean isWrite() {
-		return isWrite;
+		return write;
 	}
-	public void setWrite(boolean isWrite) {
-		this.isWrite = isWrite;
+	public void setWrite(boolean write) {
+		this.write = write;
 	}
 	public boolean isExecute() {
-		return isExecute;
+		return execute;
 	}
-	public void setExecute(boolean isExecute) {
-		this.isExecute = isExecute;
+	public void setExecute(boolean execute) {
+		this.execute = execute;
 	}
 	public String getCreateTime() {
 		return createTime;
 	}
 	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
-	}
-	
-	
-	
-	
+	}	
+
 }

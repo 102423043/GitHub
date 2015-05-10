@@ -12,6 +12,7 @@ import model.RunTimePolicy;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
+import org.zkoss.zul.ListModelList;
 
 import dao.ApplicationDao;
 import dao.PolicyDao;
@@ -48,8 +49,8 @@ public class SettingRunTimePolicyViewModel {
 		logInfo = new LogInfo();
 		
 		applications = new ArrayList<String>();
-		runTimePolicies = new ArrayList<RunTimePolicy>();
-		appPolicies = new ArrayList<AppPolicy>();
+		runTimePolicies = new ListModelList<RunTimePolicy>();
+		appPolicies = new ListModelList<AppPolicy>();
 		
 		loadData();
 	}
@@ -73,19 +74,25 @@ public class SettingRunTimePolicyViewModel {
 	public void getPolicyList(String type){
 		List<Policy> pList = plDao.getAllList(type);
 		if(pList != null){
-			for(Policy p: pList){
-				logInfo.info("%s", p.getPolicy());
-				if(type == "RunTimePolicy"){
-					RunTimePolicy rtp = (RunTimePolicy)parseXML.XMLParseToRunTimeOrAppObj(p.getPolicy(),type);
-					rtp.setId(p.getId());
-					rtp.setCreateTime(new SimpleDateFormat("yyyy/MM/dd").format(p.getCreateTime()));
-					runTimePolicies.add(rtp);
-				}else if(type == "AppPolicy"){
-					AppPolicy ap = (AppPolicy)parseXML.XMLParseToRunTimeOrAppObj(p.getPolicy(),type);
-					ap.setId(p.getId());
-					ap.setCreateTime(new SimpleDateFormat("yyyy/MM/dd").format(p.getCreateTime()));
-					appPolicies.add(ap);
-				}
+			switch(type){
+				case "RunTimePolicy":
+					runTimePolicies.clear();
+					for(Policy p: pList){
+						RunTimePolicy rtp = (RunTimePolicy)parseXML.XMLParseToRunTimeOrAppObj(p.getPolicy(),type);
+						rtp.setId(p.getId());
+						rtp.setCreateTime(new SimpleDateFormat("yyyy/MM/dd").format(p.getCreateTime()));
+						runTimePolicies.add(rtp);
+					}
+					break;
+				case "AppPolicy":
+					appPolicies.clear();
+					for(Policy p: pList){
+						AppPolicy ap = (AppPolicy)parseXML.XMLParseToRunTimeOrAppObj(p.getPolicy(),type);
+						ap.setId(p.getId());
+						ap.setCreateTime(new SimpleDateFormat("yyyy/MM/dd").format(p.getCreateTime()));
+						appPolicies.add(ap);
+					}
+					break;
 			}
 		}
 	}
@@ -115,6 +122,16 @@ public class SettingRunTimePolicyViewModel {
 		getPolicyList(type);
 	}
 	
+	/**
+	 * 功能: 刪除安全政策
+	 * */
+	@Command
+	public void removePolicy(@BindingParam("mStr")String id) {
+		
+		plDao.removeById(id);
+		getPolicyList("RunTimePolicy");
+		getPolicyList("AppPolicy");
+	}
 	
 	/**
 	 * Setter & Getter 物件
