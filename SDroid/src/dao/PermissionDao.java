@@ -16,7 +16,6 @@ import util.ResultSetMapper;
 
 public class PermissionDao {
 
-	private JDBCmysql sql;
 	private Connection con = null; 
 	private Statement stat = null; 
 	private ResultSet rs = null; 
@@ -31,6 +30,72 @@ public class PermissionDao {
 		logInfo = new LogInfo();
 	}
 	
+	/**
+	 * 功能: 新增一筆 Permission 資料
+	 * permission: Permission 的物件
+	 * */
+	public Integer insert(String permission){
+		sqlStr ="INSERT INTO "+tableName+
+				" (permission)"+
+				" VALUES ("+permission+")";
+		int key = 0;
+		try {		
+		      stat = con.createStatement(); 
+		      key = stat.executeUpdate(sqlStr, Statement.RETURN_GENERATED_KEYS); 
+		      System.out.println("insertSQL:"+sqlStr);	
+		      
+		      if(key ==0)
+		      {
+		    	  System.out.println("App not found!");
+		      }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return key;
+ 
+	}
+	
+	/**
+	 * 功能: 依 String 查詢 Permission
+	 * pStr: permission
+	 * */
+	public Permission getByPermission(String pStr){
+		List<Permission> pojoList = new ArrayList<Permission>();
+		ResultSetMapper<Permission> resultSetMapper = new ResultSetMapper<Permission>();
+		sqlStr = "select * from "+tableName+" as p where p.permission = '"+pStr+"' ";
+		
+	    try 
+	    { 
+	      stat = con.createStatement(); 
+	      rs = stat.executeQuery(sqlStr); 
+	      logInfo.info("getByPermission: %s", sqlStr);	
+	      
+	      pojoList= resultSetMapper.mapRersultSetToObject(rs, Permission.class);
+	      
+	    } 
+	    catch(SQLException e) 
+	    { 
+	      System.out.println("getListById DropDB Exception :" + e.toString()); 
+	    } 
+	    finally 
+	    { 
+	      Close(); 
+	    }	
+	    if(pojoList == null){
+	    	return null;
+	    }
+	    
+	    return pojoList.get(0);
+	}
+	
+	
+	
+	/**
+	 * 功能: 依 id 查詢 Permission
+	 * pid: Permission id
+	 * */
 	public Permission getListById(int pid){
 		
 		List<Permission> pojoList = new ArrayList<Permission>();
@@ -57,6 +122,9 @@ public class PermissionDao {
 	    return pojoList.get(0);
 	}
 	
+	/**
+	 * 功能: 查詢全部的Permission
+	 * */
 	public List<Permission> getAllList(){
 		List<Permission> pojoList = new ArrayList<Permission>();
 		ResultSetMapper<Permission> resultSetMapper = new ResultSetMapper<Permission>();

@@ -5,6 +5,12 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import model.Application;
+import model.Permission;
 
 import com.gc.android.market.api.LoginException;
 import com.gc.android.market.api.MarketSession;
@@ -15,14 +21,24 @@ import com.gc.android.market.api.model.Market.AppsResponse;
 import com.gc.android.market.api.model.Market.ResponseContext;
 import com.gc.android.market.api.model.Market.GetAssetResponse.InstallAsset;
 
+import dao.AndroidManifestDao;
+import dao.ApplicationDao;
+import dao.PermissionDao;
+
 
 public class APKDownload {
+	
 	private ConfigFile config = null; 
+	private Application application = null;
 	
 	public APKDownload(){
 		config = new ConfigFile();
 	}
 	
+	/**
+	 * 功能: 於Google Market上，搜尋該Application的相關資訊
+	 * pkName：Android package name
+	 * */
 	public void SearchAPKFromGooglePlay(String pname){      
 		MarketSession session = new MarketSession(false);
 		session.login(config.getPropValue("email"), config.getPropValue("password"), config.getPropValue("deviceId"));
@@ -30,7 +46,7 @@ public class APKDownload {
         AppsRequest appsRequest = AppsRequest.newBuilder().setStartIndex(0)
                         .setEntriesCount(10).setQuery("pname:"+pname)
                         .setWithExtendedInfo(true).build();
-
+        
         session.append(appsRequest, new Callback<AppsResponse>() {
                 @Override
                 public void onResult(ResponseContext context, AppsResponse response) {
@@ -38,25 +54,68 @@ public class APKDownload {
                         System.out.println("APP's count: " + count);
                         for (int i = 0; i < count; i++) {
                                 App app = response.getApp(i); 
-                                int pCount = app.getExtendedInfoOrBuilder().getPermissionIdCount();
-                                System.out.println("permissions' count: " + pCount);
-                                for (int j = 0; j < pCount; j++){
-                                	System.out.println(app.getExtendedInfoOrBuilder().getPermissionId(j));
-                                }
-
+                                System.out.print(app.toString());
+                                saveAppInfo(app);
                         }
                 }
         });
         session.flush(); 
 	}
 	
-	public void APKDownloadFromGooglePlay(String assetId){  
+	/**
+	 * 功能: 將Android app資訊，儲存至application、permission、androidManifest DB Table
+	 * app: Android app 相關資訊
+	 * */
+	private void saveAppInfo(App app){
+		
+		ApplicationDao aDao = new ApplicationDao();
+		PermissionDao pDao = new PermissionDao();
+		
+		//新增Application
+		application = new Application();
+		
+		application.setAssetId(app.getId());
+		application.setAppLabel(app.getTitle());
+		application.setPkName(app.getPackageName());
+		application.setVersion(app.getVersion());
+		application.setDescription(app.getExtendedInfoOrBuilder().getDescription());
+		application.setInstallSize(app.getExtendedInfoOrBuilder().getInstallSize());
+		application.setCreator(app.getCreator());
+		application.setContactEmail(app.getExtendedInfoOrBuilder().getContactEmail());
+		application.setContactWebsite(app.getExtendedInfoOrBuilder().getContactWebsite());
+		application.setCreateTime(new Date());
+		int aId =aDao.insert(application);
+		
+		//新增Permission
+		List<Integer> pIdList = new ArrayList<Integer>();
+        int pCount = app.getExtendedInfoOrBuilder().getPermissionIdCount();
+        for (int i = 0; i < pCount; i++){
+        	String perStr = app.getExtendedInfoOrBuilder().getPermissionId(i);
+        	Permission permission = pDao.getByPermission(perStr);
+        	if(permission != null){
+        		pIdList.add(permission.getId());
+        	}else{
+        		pIdList.add(pDao.insert(perStr));
+        	}
+        }
+        
+		//新增 Application & Permission 關聯
+        AndroidManifestDao amfDao = new AndroidManifestDao();
+        amfDao.insert(aId, pIdList);
+        
+	}
+	
+	/**
+	 * 功能: 於Google Market上，下載指定的Apk檔案
+	 * assetId：為App UniqueID，可透過 SearchAPKFromGooglePlay 方法取得
+	 * */
+	public void APKDownloadFromGooglePlay(String appLabel,String assetId){  
 		//ex: assetId = 8069246084405590500
 		try{
 			MarketSession session = new MarketSession(true);
 			session.login(config.getPropValue("email"), config.getPropValue("password"), config.getPropValue("deviceId"));
 			
-			String fileToSave = assetId + ".apk";
+			String fileToSave = appLabel + ".apk";
 			
 			System.out.println("Downloading.. " + fileToSave);
             InstallAsset ia = session.queryGetAssetRequest(assetId).getInstallAsset(0);
@@ -99,6 +158,14 @@ public class APKDownload {
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
+	}
+
+	public Application getApplication() {
+		return application;
+	}
+
+	public void setApplication(Application application) {
+		this.application = application;
 	}
 
 }

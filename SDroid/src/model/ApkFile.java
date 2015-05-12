@@ -1,6 +1,6 @@
 package model;
 
-public class App
+public class ApkFile
 {
     /**
      * App id
@@ -24,7 +24,7 @@ public class App
      * @param downloadPath
      * @param marketDA
      */
-    public App(String appId, String downloadPath, String marketDA)
+    public ApkFile(String appId, String downloadPath, String marketDA)
     {
         this.appId = appId;
         this.downloadPath = downloadPath;
