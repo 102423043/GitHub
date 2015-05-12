@@ -24,9 +24,6 @@ public class Application {
 	@Column(name="version")
 	private String version;
 	
-	@Column(name="description")
-	private String description;
-	
 	@Column(name="apk_file")
 	private String apkFile;
 	
@@ -96,12 +93,6 @@ public class Application {
 	}
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
 	}
 	public Integer getInstallSize() {
 		return installSize;

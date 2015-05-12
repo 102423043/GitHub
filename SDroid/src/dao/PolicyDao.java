@@ -94,6 +94,31 @@ public class PolicyDao {
 		return res;	
 	}
 	
+	
+	public List<Policy> getListByAppName(String appName){
+		List<Policy> pojoList = new ArrayList<Policy>();
+		ResultSetMapper<Policy> resultSetMapper = new ResultSetMapper<Policy>();
+		sqlStr = "select * from "+tableName+" where type='installTime' and policy like '"+appName+"'";
+	    try 
+	    { 
+	      stat = con.createStatement(); 
+	      rs = stat.executeQuery(sqlStr); 
+	      logInfo.info("getListByAppName: %s", sqlStr);	
+	      
+	      pojoList= resultSetMapper.mapRersultSetToObject(rs, Policy.class);
+	      
+	    } 
+	    catch(SQLException e) 
+	    { 
+	      System.out.println("getAllList DropDB Exception :" + e.toString()); 
+	    } 
+	    finally 
+	    { 
+	      Close(); 
+	    }
+	    return pojoList;
+	}
+	
 	public List<Policy> getAllList(String type){
 		List<Policy> pojoList = new ArrayList<Policy>();
 		ResultSetMapper<Policy> resultSetMapper = new ResultSetMapper<Policy>();

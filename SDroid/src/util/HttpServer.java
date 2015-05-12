@@ -9,30 +9,34 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name="HttpServer", urlPatterns={"/HttpServer.do"})
+@WebServlet(name = "HttpServer", urlPatterns = { "/HttpServer.do" })
 public class HttpServer extends HttpServlet {
+	
 	private static final long serialVersionUID = 1L;
-       
-    public HttpServer() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		LogInfo log = new LogInfo();
-		
-		String pkname = request.getParameter("pkName");
-		log.info("pkname: %s", pkname);
-
-		PrintWriter output = response.getWriter();
-//		response.setContentType("text/html");
-		output.println("allow");
-		output.close();
-
+	private PolicyMatchedUtil pmUtil;
+	
+	public HttpServer() {
+		super();
+		pmUtil = new PolicyMatchedUtil();
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		LogInfo log = new LogInfo();
+
+		String pkname = request.getParameter("pkName");
+		log.info("pkname: %s", pkname);
+		String status = pmUtil.analysisPolicyMatched(pkname);
+		
+		
+		PrintWriter output = response.getWriter();
+		output.println(status);
+		output.close();
+	}
+
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}

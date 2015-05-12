@@ -13,21 +13,31 @@ import android.util.TypedValue;
 
 public class AXMLPrinter {
 
-	static final String DEFAULT_XML = "AndroidManifest.xml";
-
-	public void getManifestXMLFromAPK() {
+	final String DEFAULT_XML = "AndroidManifest.xml";
+	private LogInfo logInfo;
+	
+	/**
+	 * 功能: 初始化設定
+	 * */
+	public AXMLPrinter(){
+		logInfo = new LogInfo();
+	}
+	
+	/**
+	 * 功能: 解壓縮.apk檔案和取得 AndroidManifest.xml
+	 * apkFile: 上傳的檔案
+	 * */
+	public List<String> getManifestXMLFromAPK(File apkFile) {
+		
+		List<String> list = new ArrayList<String>();
 		try {
-			// Unzip .apk file and get AndroidManifest.xml
-			File apkFile = new File(
-					"C:\\Users\\lemon\\Desktop\\jp.naver.line.android.apk");
+			
 			ZipFile file = new ZipFile(apkFile, ZipFile.OPEN_READ);
 			ZipEntry entry = file.getEntry(DEFAULT_XML);
 
 			AXmlResourceParser parser = new AXmlResourceParser();
 			parser.open(file.getInputStream(entry));
 
-			//
-			List<String> plist = new ArrayList<String>();
 			StringBuilder indent = new StringBuilder(10);
 			final String indentStep = "	";
 
@@ -40,16 +50,11 @@ public class AXMLPrinter {
 				switch (type) {
 				case XmlPullParser.START_TAG: {
 					indent.append(indentStep);
-					if (parser.getName().contains("uses-permission")
-							|| parser.getName().contains("permission")) {
-						System.out.println("< " + parser.getName());
-
+					if (parser.getName().contains("uses-permission")) {
 						for (int i = 0; i != parser.getAttributeCount(); ++i) {
-							log("%s%s%s=\"%s\"", indent,
-									getNamespacePrefix(parser
-											.getAttributePrefix(i)),
-									parser.getAttributeName(i),
-									getAttributeValue(parser, i));
+							String permission = getAttributeValue(parser, i);
+							list.add(permission);
+							logInfo.info("%s", permission);
 						}
 					}
 					break;
@@ -63,6 +68,7 @@ public class AXMLPrinter {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		return list;
 
 	}
 
@@ -110,11 +116,6 @@ public class AXMLPrinter {
 			return "android:";
 		}
 		return "";
-	}
-
-	private static void log(String format, Object... arguments) {
-		System.out.printf(format, arguments);
-		System.out.println();
 	}
 
 }

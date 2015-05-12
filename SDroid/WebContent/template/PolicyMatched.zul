@@ -2,8 +2,9 @@
 <vlayout apply="org.zkoss.bind.BindComposer" style="padding: 20px"
 	viewModel="@id('PMvm') @init('viewmodel.PolicyMatchedViewModel')">
 	<hbox>
-		Android .apk 檔案：<fileupload image="/img/blue_upload.png"
-			onUpload="@command('uploadAPKFile',mStr=event.media)" />
+		Package or App name：
+		<textbox id="txtPkName" width="150px" />
+		<button image="/img/blue_upload.png" onClick="@command('searchAPKInfo',mStr=txtPkName.value)" />
 	</hbox>
 	<hlayout spacing="0" height="400px">
 		<listbox vflex="true" hflex="1">

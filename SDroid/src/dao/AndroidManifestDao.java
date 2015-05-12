@@ -34,20 +34,21 @@ public class AndroidManifestDao {
 				+ " (app_id,permission_id)"
 				+ " VALUES (?,?)";
 		try {
-			PreparedStatement ps = con.prepareStatement(sqlStr);
+			pst = con.prepareStatement(sqlStr);
 			for(Integer pId: pIds){
-				ps.setInt(1, aId);
-				ps.setInt(2, pId);
-				ps.addBatch();
+				pst.setInt(1, aId);
+				pst.setInt(2, pId);
+				pst.addBatch();
 			}
-			ps.executeBatch();
-			con.commit();
+			pst.executeBatch();
 			
 			System.out.println("insertSQL:" + sqlStr);
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			Close();
 		}
 
 	}

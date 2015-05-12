@@ -30,9 +30,11 @@ public class APKDownload {
 	
 	private ConfigFile config = null; 
 	private Application application = null;
+	private LogInfo logInfo = null;
 	
 	public APKDownload(){
 		config = new ConfigFile();
+		logInfo = new LogInfo();
 	}
 	
 	/**
@@ -78,12 +80,10 @@ public class APKDownload {
 		application.setAppLabel(app.getTitle());
 		application.setPkName(app.getPackageName());
 		application.setVersion(app.getVersion());
-		application.setDescription(app.getExtendedInfoOrBuilder().getDescription());
 		application.setInstallSize(app.getExtendedInfoOrBuilder().getInstallSize());
 		application.setCreator(app.getCreator());
 		application.setContactEmail(app.getExtendedInfoOrBuilder().getContactEmail());
 		application.setContactWebsite(app.getExtendedInfoOrBuilder().getContactWebsite());
-		application.setCreateTime(new Date());
 		int aId =aDao.insert(application);
 		
 		//新增Permission
@@ -109,9 +109,12 @@ public class APKDownload {
 	 * 功能: 於Google Market上，下載指定的Apk檔案
 	 * assetId：為App UniqueID，可透過 SearchAPKFromGooglePlay 方法取得
 	 * */
-	public void APKDownloadFromGooglePlay(String appLabel,String assetId){  
+	public boolean APKDownloadFromGooglePlay(String appLabel,String assetId){  
 		//ex: assetId = 8069246084405590500
+		boolean result = false;
 		try{
+			logInfo.info("appLabel: %s, assetId: %s", appLabel,assetId);
+			
 			MarketSession session = new MarketSession(true);
 			session.login(config.getPropValue("email"), config.getPropValue("password"), config.getPropValue("deviceId"));
 			
@@ -152,12 +155,16 @@ public class APKDownload {
             stream.close();
             System.gc();
 			
+            result = true;
             System.out.println("Download finished!");
 		}catch(LoginException le){
 			le.printStackTrace();
+			result = false;
 		}catch(Exception ex){
 			ex.printStackTrace();
+			result = false;
 		}
+		return result;
 	}
 
 	public Application getApplication() {

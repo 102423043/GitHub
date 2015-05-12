@@ -89,10 +89,12 @@ public class SettingPolicyViewModel {
 	public void loadData() {
 
 		List<Permission> perList = pDao.getAllList();
+		permissions.add("any");
 		for (Permission per : perList) {
 			permissions.add(per.getPermission());
 		}
 		List<Application> appList = aDao.getAllList();
+		applications.add("any");
 		for (Application app : appList) {
 			applications.add(app.getAppLabel());
 		}
