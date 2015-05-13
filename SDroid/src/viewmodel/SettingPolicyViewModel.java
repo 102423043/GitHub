@@ -9,17 +9,21 @@ import model.Condition;
 import model.InstallTimePolicy;
 import model.Permission;
 import model.Policy;
+import model.PolicyMatched;
 
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.zk.ui.Path;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.MouseEvent;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zul.Box;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.impl.LabelElement;
 
@@ -31,6 +35,7 @@ import util.ParseXML;
 import dao.ApplicationDao;
 import dao.PermissionDao;
 import dao.PolicyDao;
+import dao.PolicyMatchedDao;
 
 public class SettingPolicyViewModel {
 
@@ -38,11 +43,12 @@ public class SettingPolicyViewModel {
 	private Policy policy;
 	private InstallTimePolicy installPolicy;
 	private Condition minVersion;
-	private Condition permissionLevel;
+//	private Condition permissionLevel;
 	// Dao
 	private PermissionDao pDao;
 	private ApplicationDao aDao;
 	private PolicyDao plDao;
+	private PolicyMatchedDao pmDao;
 	// Util
 	private ParseXML parseXML;
 	private LogInfo logInfo;
@@ -63,11 +69,12 @@ public class SettingPolicyViewModel {
 		policy = new Policy();
 		installPolicy = new InstallTimePolicy();
 		minVersion = new Condition();
-		permissionLevel = new Condition();
+//		permissionLevel = new Condition();
 
 		pDao = new PermissionDao();
 		aDao = new ApplicationDao();
 		plDao = new PolicyDao();
+		pmDao = new PolicyMatchedDao();
 
 		parseXML = new ParseXML();
 		logInfo = new LogInfo();
@@ -127,11 +134,12 @@ public class SettingPolicyViewModel {
 	@Command
 	public void insertPolicy() {
 		Policy policy;
-
-		minVersion.setName("minVersion");
-		permissionLevel.setName("permissionLevel");
-		installPolicy.getConditions().add(minVersion);
-		installPolicy.getConditions().add(permissionLevel);
+		
+		installPolicy.getConditions().clear();
+		if(minVersion.getValue() != null){
+			minVersion.setName("minVersion");
+			installPolicy.getConditions().add(minVersion);
+		}
 
 		String policyXML = parseXML.InstallObjParseToXML(installPolicy);
 		policy = new Policy();
@@ -147,9 +155,29 @@ public class SettingPolicyViewModel {
 	 * 功能: 刪除安全政策
 	 * */
 	@Command
-	public void removePolicy(@BindingParam("mStr")String id) {
+	public void removePolicy(@BindingParam("mStr") final String id) {
 		
-		plDao.removeById(id);
+		List<PolicyMatched> list = pmDao.getListByPid(id);
+		if(list != null){
+			Messagebox.show("此筆Policy已有Matched App，是否確定刪除?", 
+				    "Question", Messagebox.OK | Messagebox.CANCEL,
+				    Messagebox.QUESTION, new EventListener(){
+							@Override
+							public void onEvent(Event e) throws Exception {
+				                if(Messagebox.ON_OK.equals(e.getName())){
+				    				pmDao.removeByPid(id);
+				    				plDao.removeById(id);
+				    				Messagebox.show("Policy刪除成功");
+				                }else if(Messagebox.ON_CANCEL.equals(e.getName())){
+				                	return;
+				                }
+							}
+				        }
+				    );
+		}else{
+			plDao.removeById(id);
+			Messagebox.show("Policy刪除成功");
+		}
 		getInstallPolicyList();
 	}
 	
@@ -169,9 +197,9 @@ public class SettingPolicyViewModel {
 		return minVersion;
 	}
 
-	public Condition getPermissionLevel() {
-		return permissionLevel;
-	}
+//	public Condition getPermissionLevel() {
+//		return permissionLevel;
+//	}
 
 	public List<InstallTimePolicy> getInstallTimePolicies() {
 		return installTimePolicies;

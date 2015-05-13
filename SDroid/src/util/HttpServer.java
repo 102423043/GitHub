@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * 訊息通知，負責接收從App agent的訊息，並回傳分析結果
+ * */
 @WebServlet(name = "HttpServer", urlPatterns = { "/HttpServer.do" })
 public class HttpServer extends HttpServlet {
 	
@@ -22,13 +25,12 @@ public class HttpServer extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+
 		LogInfo log = new LogInfo();
 
 		String pkname = request.getParameter("pkName");
 		log.info("pkname: %s", pkname);
 		String status = pmUtil.analysisPolicyMatched(pkname);
-		
 		
 		PrintWriter output = response.getWriter();
 		output.println(status);
@@ -37,7 +39,7 @@ public class HttpServer extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+
 		doGet(request, response);
 	}
 

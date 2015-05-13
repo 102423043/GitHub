@@ -1,5 +1,5 @@
 
-<tabbox height="400px" style="padding: 20px" apply="org.zkoss.bind.BindComposer"
+<tabbox height="600px" style="padding: 20px" apply="org.zkoss.bind.BindComposer"
 	viewModel="@id('SRTPvm') @init('viewmodel.SettingRunTimePolicyViewModel')">
 	<tabs>
 		<tab label="Run-time Policy" iconSclass="icon-tag" />
@@ -19,7 +19,7 @@
 					</combobox>
 					<separator spacing="10px" />
 					<label value="Source Application：" />
-					<combobox id="cmbSourceApp" width="200px"
+					<combobox id="cmbSourceApp" width="250px"
 						model="@load(SRTPvm.applications)" selectedItem="@save(SRTPvm.runTimePolicy.sourceApplication)">
 						<template name="model">
 							<comboitem label="@load(each)" />
@@ -27,7 +27,7 @@
 					</combobox>
 					<separator spacing="10px" />
 					<label value="Destination Application：" />
-					<combobox id="cmbDestApp" width="200px"
+					<combobox id="cmbDestApp" width="250px"
 						model="@load(SRTPvm.applications)" selectedItem="@save(SRTPvm.runTimePolicy.destinationApplication)">
 						<template name="model">
 							<comboitem label="@load(each)" />
@@ -40,7 +40,7 @@
 				<!-- Run-time 清單 -->
 				<separator spacing="10px" />
 				<listbox id="lbRunTime" model="@load(SRTPvm.runTimePolicies)" emptyMessage="No policies found."
-					mold="paging" pageSize="10" width="1000px">
+					mold="paging" pageSize="8" width="1000px">
 					<auxhead>
 						<auxheader colspan="5" iconSclass="icon-Posts">
 							Run-time 安全政策清單
@@ -74,7 +74,7 @@
 				<hlayout>
 					<!-- App Policy 安全政策 -->
 					<label value="Application：" />
-					<combobox id="cmbApp" width="200px" model="@load(SRTPvm.applications)"
+					<combobox id="cmbApp" width="250px" model="@load(SRTPvm.applications)"
 						selectedItem="@save(SRTPvm.appPolicy.application)">
 						<template name="model">
 							<comboitem label="@load(each)" />
@@ -92,7 +92,7 @@
 				<!--App Policy 清單 -->
 				<separator spacing="10px" />
 				<listbox model="@load(SRTPvm.appPolicies)" emptyMessage="No policies found."
-					mold="paging" pageSize="10" width="1000px">
+					mold="paging" pageSize="8" width="1000px">
 					<auxhead>
 						<auxheader colspan="6" iconSclass="icon-Posts">
 							App Policy 安全政策清單

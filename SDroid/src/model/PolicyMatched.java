@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
@@ -17,9 +19,9 @@ public class PolicyMatched {
 	@Column(name="result")
 	private String result;
 	@Column(name="modify_time")
-	private DateTime modifyTime;
+	private Date modifyTime;
 	@Column(name="create_time")
-	private DateTime createTime;
+	private Date createTime;
 	
 	
 	public int getId() {
@@ -46,16 +48,16 @@ public class PolicyMatched {
 	public void setResult(String result) {
 		this.result = result;
 	}
-	public DateTime getModifyTime() {
+	public Date getModifyTime() {
 		return modifyTime;
 	}
-	public void setModifyTime(DateTime modifyTime) {
+	public void setModifyTime(Date modifyTime) {
 		this.modifyTime = modifyTime;
 	}
-	public DateTime getCreateTime() {
+	public Date getCreateTime() {
 		return createTime;
 	}
-	public void setCreateTime(DateTime createTime) {
+	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
 	

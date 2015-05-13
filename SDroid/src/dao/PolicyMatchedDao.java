@@ -11,35 +11,33 @@ import java.util.Date;
 import java.util.List;
 
 import model.Policy;
+import model.PolicyMatched;
 import util.JDBCmysql;
 import util.LogInfo;
 import util.ResultSetMapper;
 
-public class PolicyDao {
+public class PolicyMatchedDao {
 
-	private JDBCmysql sql;
 	private Connection con = null; 
 	private Statement stat = null; 
 	private ResultSet rs = null; 
 	private PreparedStatement pst = null; 
-	private String sqlStr = "";
 	private LogInfo logInfo = null;
 	
-	private String tableName = "policy";
-	
-	public PolicyDao(){
+	private String tableName = "policymatched";
+
+	public PolicyMatchedDao(){
 		con = new JDBCmysql().getConnection();
 		logInfo = new LogInfo();
 	}
 	
-	public boolean insert(Policy policy){
+	public boolean insert(PolicyMatched pm){
 		boolean res = false;
 		SimpleDateFormat bartDateFormat = new SimpleDateFormat("yyyy-MM-dd");       
 		
 		String sqlStr = String.format("INSERT INTO "+tableName+
-				" (type,policy,create_time) VALUES ('%s','%s','%s')",
-				policy.getType(),policy.getPolicy(),bartDateFormat.format(new Date()));
-		
+				" (policy_id,app_id,result,create_time) VALUES ('%s','%s','%s','%s')",
+				pm.getPolicyId(),pm.getAppId(),pm.getResult(),bartDateFormat.format(new Date()));
 	    try 
 	    { 
 	      stat = con.createStatement(); 
@@ -50,7 +48,6 @@ public class PolicyDao {
 	      {
 	    	  res = true;
 	      }
-	      
 	    } 
 	    catch(SQLException e) 
 	    { 
@@ -60,15 +57,13 @@ public class PolicyDao {
 	    { 
 	      Close(); 
 	    }		
-		
-		return res;		
-		
+		return res;			
 	}
 	
-	public boolean removeById(String id){
+	public boolean removeByPid(String pId){
 		boolean res = false;   
 		
-		String sqlStr = "DELETE FROM "+tableName+" WHERE id="+id;
+		String sqlStr = "DELETE FROM "+tableName+" WHERE policy_id="+pId;
 		
 	    try 
 	    { 
@@ -84,7 +79,7 @@ public class PolicyDao {
 	    } 
 	    catch(SQLException e) 
 	    { 
-	      System.out.println("removeById DropDB Exception :" + e.toString()); 
+	      System.out.println("removeByPid DropDB Exception :" + e.toString()); 
 	    } 
 	    finally 
 	    { 
@@ -94,44 +89,18 @@ public class PolicyDao {
 		return res;	
 	}
 	
-	
-	public List<Policy> getListByAppName(String appName){
-		List<Policy> pojoList = new ArrayList<Policy>();
-		ResultSetMapper<Policy> resultSetMapper = new ResultSetMapper<Policy>();
-		sqlStr = "select * from "+tableName+" where type='installTime' and "+
-				 " policy like '%"+appName+"%' or policy like '%<application>any</application>%' ";
+	public List<PolicyMatched> getListByPid(String pId){
+		List<PolicyMatched> pojoList = new ArrayList<PolicyMatched>();
+		ResultSetMapper<PolicyMatched> resultSetMapper = new ResultSetMapper<PolicyMatched>();
+		String sqlStr = "select * from "+tableName+" ";
+		sqlStr +="where policy_id="+pId;
 	    try 
 	    { 
 	      stat = con.createStatement(); 
 	      rs = stat.executeQuery(sqlStr); 
-	      logInfo.info("getListByAppName: %s", sqlStr);	
+	      logInfo.info("getListByPid: %s", sqlStr);	
 	      
-	      pojoList= resultSetMapper.mapRersultSetToObject(rs, Policy.class);
-	      
-	    } 
-	    catch(SQLException e) 
-	    { 
-	      System.out.println("getAllList DropDB Exception :" + e.toString()); 
-	    } 
-	    finally 
-	    { 
-	      Close(); 
-	    }
-	    return pojoList;
-	}
-	
-	public List<Policy> getAllList(String type){
-		List<Policy> pojoList = new ArrayList<Policy>();
-		ResultSetMapper<Policy> resultSetMapper = new ResultSetMapper<Policy>();
-		sqlStr = "select * from "+tableName+" ";
-		sqlStr +="where type='"+type+"'";
-	    try 
-	    { 
-	      stat = con.createStatement(); 
-	      rs = stat.executeQuery(sqlStr); 
-	      logInfo.info("getAllList: %s", sqlStr);	
-	      
-	      pojoList= resultSetMapper.mapRersultSetToObject(rs, Policy.class);
+	      pojoList= resultSetMapper.mapRersultSetToObject(rs, PolicyMatched.class);
 	      
 	    } 
 	    catch(SQLException e) 
@@ -144,6 +113,7 @@ public class PolicyDao {
 	    }	
 	    return pojoList;
 	}
+	
 	
 	private void Close() 
 	{ 

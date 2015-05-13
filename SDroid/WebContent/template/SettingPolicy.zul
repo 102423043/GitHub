@@ -1,5 +1,5 @@
 
-<tabbox height="400px" style="padding: 20px" apply="org.zkoss.bind.BindComposer"
+<tabbox height="600px" style="padding: 20px" apply="org.zkoss.bind.BindComposer"
 	viewModel="@id('SPvm') @init('viewmodel.SettingPolicyViewModel')">
 	<tabs>
 		<tab label="Install-Time 安全政策制定" iconSclass="icon-tag" />
@@ -19,7 +19,7 @@
 							</combobox>
 							<separator spacing="10px" />
 							<label value="Application：" />
-							<combobox id="cmbApp" width="180px" model="@load(SPvm.applications)"
+							<combobox id="cmbApp" width="230px" model="@load(SPvm.applications)"
 								selectedItem="@bind(SPvm.installPolicy.application)">
 								<template name="model">
 									<comboitem label="@load(each)" value="@load(each)" />
@@ -27,7 +27,7 @@
 							</combobox>
 							<separator spacing="10px" />
 							<label value="Permission：" />
-							<combobox id="cmbPermission" width="230px"
+							<combobox id="cmbPermission" width="350px"
 								model="@load(SPvm.permissions)" selectedItem="@bind(SPvm.installPolicy.permission)">
 								<template name="model">
 									<comboitem label="@load(each)" value="@load(each)" />
@@ -45,9 +45,11 @@
 											autocheck="true"
 											onCheck="ConditionChecked(self.getLabel(),self.isChecked())" />
 										<menuseparator />
+										<!-- 
 										<menuitem label="permission-level" checkmark="true"
 											autocheck="true"
 											onCheck="ConditionChecked(self.getLabel(),self.isChecked())" />
+										 -->
 									</menupopup>
 								</menu>
 							</menubar>
@@ -57,6 +59,7 @@
 								<label value="min-version" />
 								<textbox width="100px" value="@save(SPvm.minVersion.value)" />
 							</box>
+							<!-- 
 							<box id="hboxCondition2" orient="horizontal" visible="false">
 								<label value="permission-level" />
 								<combobox width="180px" selectedItem="@save(SPvm.permissionLevel.value)">
@@ -66,6 +69,7 @@
 									<comboitem label="signatureOrSystem" value="signatureOrSystem" />
 								</combobox>
 							</box>
+							 -->
 							<zscript><![CDATA[ 
 								    void ConditionChecked(String item,Boolean check){
 								    	switch(item){
@@ -76,6 +80,7 @@
 													hboxCondition1.setVisible(false);
 												}
 												break;
+												/*
 											case "permission-level":
 												if(check){
 													hboxCondition2.setVisible(true);
@@ -83,6 +88,7 @@
 													hboxCondition2.setVisible(false);
 												}
 												break;
+												*/
 										}          
 								    }     
 								]]></zscript>
@@ -95,7 +101,7 @@
 				<!-- install-time 清單 -->
 				<separator spacing="10px" />
 				<listbox model="@load(SPvm.installTimePolicies)" emptyMessage="No policies found."
-					mold="paging" pageSize="10">
+					mold="paging" pageSize="8">
 					<auxhead>
 						<auxheader colspan="6" iconSclass="icon-Posts">
 							Install-Time 安全政策清單
