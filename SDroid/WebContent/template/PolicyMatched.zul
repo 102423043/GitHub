@@ -34,11 +34,19 @@
 				<caption label="Application 詳細資訊" />
 				<hlayout>
 					<vlayout>
+						<!-- 分析結果 -->
+						<hbox>
+							<label value="Analysis Result:" style="font-weight:bolder;" />
+							<label id="result" />
+						</hbox>					
 						<hbox>
 							<label value="Application:" style="font-weight:bolder;" />
 							<label id="appLabel" />
-							<label id="pkName" />
 						</hbox>
+						<hbox>
+							<label value="Package Name:" style="font-weight:bolder;" />
+							<label id="pkName" />
+						</hbox>						
 						<hbox>
 							<label value="Version:" style="font-weight:bolder;" />
 							<label id="version" />
@@ -47,13 +55,12 @@
 							<label value="File Size:" style="font-weight:bolder;" />
 							<label id="size" />
 						</hbox>
-						<!-- 分析結果 -->
-						<hbox>
-							<label value="Analysis Result:" style="font-weight:bolder;" />
-							<label id="result" />
-						</hbox>
 					</vlayout>
 					<vlayout>
+						<hbox>
+							<label />
+							<label />
+						</hbox>
 						<hbox>
 							<label value="Creator:" style="font-weight:bolder;" />
 							<label id="creator" />

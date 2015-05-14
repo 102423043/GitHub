@@ -106,7 +106,7 @@ public class PolicyMatchedViewModel {
 		// App
 		application = policyMatched.getApp();
 		appLabel.setValue(application.getAppLabel());
-		pkName.setValue("("+application.getPkName()+")");
+		pkName.setValue(application.getPkName());
 		version.setValue(application.getVersion());
 		if (application.getInstallSize() != null) {
 			size.setValue(application.getInstallSize().toString());

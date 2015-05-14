@@ -33,7 +33,7 @@ public class HttpServer extends HttpServlet {
 		String status = pmUtil.analysisPolicyMatched(pkname);
 		
 		PrintWriter output = response.getWriter();
-		output.println(status);
+		output.print(status);
 		output.close();
 	}
 
