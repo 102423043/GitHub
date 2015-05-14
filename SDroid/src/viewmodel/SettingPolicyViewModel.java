@@ -43,7 +43,7 @@ public class SettingPolicyViewModel {
 	private Policy policy;
 	private InstallTimePolicy installPolicy;
 	private Condition minVersion;
-//	private Condition permissionLevel;
+	// private Condition permissionLevel;
 	// Dao
 	private PermissionDao pDao;
 	private ApplicationDao aDao;
@@ -69,7 +69,7 @@ public class SettingPolicyViewModel {
 		policy = new Policy();
 		installPolicy = new InstallTimePolicy();
 		minVersion = new Condition();
-//		permissionLevel = new Condition();
+		// permissionLevel = new Condition();
 
 		pDao = new PermissionDao();
 		aDao = new ApplicationDao();
@@ -89,7 +89,7 @@ public class SettingPolicyViewModel {
 
 		loadData();
 	}
-	
+
 	/**
 	 * 功能: 當頁面初始化後，載入清單資料
 	 * */
@@ -110,7 +110,7 @@ public class SettingPolicyViewModel {
 	}
 
 	/**
-	 * 功能: 取得目前最新的 Install-time  Policies 清單
+	 * 功能: 取得目前最新的 Install-time Policies 清單
 	 * */
 	public void getInstallPolicyList() {
 		List<Policy> pList = plDao.getAllList("installTime");
@@ -134,9 +134,9 @@ public class SettingPolicyViewModel {
 	@Command
 	public void insertPolicy() {
 		Policy policy;
-		
+
 		installPolicy.getConditions().clear();
-		if(minVersion.getValue() != null){
+		if (minVersion.getValue() != null) {
 			minVersion.setName("minVersion");
 			installPolicy.getConditions().add(minVersion);
 		}
@@ -156,32 +156,30 @@ public class SettingPolicyViewModel {
 	 * */
 	@Command
 	public void removePolicy(@BindingParam("mStr") final String id) {
-		
+
 		List<PolicyMatched> list = pmDao.getListByPid(id);
-		if(list != null){
-			Messagebox.show("此筆Policy已有Matched App，是否確定刪除?", 
-				    "Question", Messagebox.OK | Messagebox.CANCEL,
-				    Messagebox.QUESTION, new EventListener(){
-							@Override
-							public void onEvent(Event e) throws Exception {
-				                if(Messagebox.ON_OK.equals(e.getName())){
-				    				pmDao.removeByPid(id);
-				    				plDao.removeById(id);
-				    				Messagebox.show("Policy刪除成功");
-				                }else if(Messagebox.ON_CANCEL.equals(e.getName())){
-				                	return;
-				                }
+		if (list != null) {
+			Messagebox.show("此筆Policy已有Matched App，是否確定刪除?", "Question",
+					Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+					new EventListener() {
+						@Override
+						public void onEvent(Event e) throws Exception {
+							if (Messagebox.ON_OK.equals(e.getName())) {
+								pmDao.removeByPid(id);
+								plDao.removeById(id);
+								Messagebox.show("Policy刪除成功");
+							} else if (Messagebox.ON_CANCEL.equals(e.getName())) {
+								return;
 							}
-				        }
-				    );
-		}else{
+						}
+					});
+		} else {
 			plDao.removeById(id);
 			Messagebox.show("Policy刪除成功");
 		}
 		getInstallPolicyList();
 	}
-	
-	
+
 	/**
 	 * Setter & Getter 物件
 	 * */
@@ -197,9 +195,9 @@ public class SettingPolicyViewModel {
 		return minVersion;
 	}
 
-//	public Condition getPermissionLevel() {
-//		return permissionLevel;
-//	}
+	// public Condition getPermissionLevel() {
+	// return permissionLevel;
+	// }
 
 	public List<InstallTimePolicy> getInstallTimePolicies() {
 		return installTimePolicies;

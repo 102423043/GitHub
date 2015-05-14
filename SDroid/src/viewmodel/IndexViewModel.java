@@ -27,7 +27,6 @@ public class IndexViewModel{
 	@Wire("#pageContent")
 	Include pageContent;
 	
-
 	/**
 	 * 功能: 導入至指定的頁面
 	 * header: 該指定頁面的Header
@@ -63,10 +62,10 @@ public class IndexViewModel{
 	}
 	
 	@Command
-	public void goToManagingMsg(@BindingParam("hStr") String header){
+	public void goToSettingLabel(@BindingParam("hStr") String header){
 		title.setValue(header);
 		subTitle.setValue(header);
-		pageContent.setSrc("/template/MessageMgt.zul");
+		pageContent.setSrc("/template/SettingDataLabel.zul");
 	}
 
 	

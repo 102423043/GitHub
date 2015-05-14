@@ -114,6 +114,54 @@ public class PolicyMatchedDao {
 	    return pojoList;
 	}
 	
+	public List<PolicyMatched> getListByAid(int aId){
+		List<PolicyMatched> pojoList = new ArrayList<PolicyMatched>();
+		ResultSetMapper<PolicyMatched> resultSetMapper = new ResultSetMapper<PolicyMatched>();
+		String sqlStr = "select * from "+tableName+" ";
+		sqlStr +="where app_id="+aId;
+	    try 
+	    { 
+	      stat = con.createStatement(); 
+	      rs = stat.executeQuery(sqlStr); 
+	      logInfo.info("getListByAid: %s", sqlStr);	
+	      
+	      pojoList= resultSetMapper.mapRersultSetToObject(rs, PolicyMatched.class);
+	      
+	    } 
+	    catch(SQLException e) 
+	    { 
+	      System.out.println("getAllList DropDB Exception :" + e.toString()); 
+	    } 
+	    finally 
+	    { 
+	      Close(); 
+	    }	
+	    return pojoList;
+	}
+	
+	public List<PolicyMatched> getListByGroup(){
+		List<PolicyMatched> pojoList = new ArrayList<PolicyMatched>();
+		ResultSetMapper<PolicyMatched> resultSetMapper = new ResultSetMapper<PolicyMatched>();
+		String sqlStr = "select * from "+tableName +" group by app_id";
+	    try 
+	    { 
+	      stat = con.createStatement(); 
+	      rs = stat.executeQuery(sqlStr); 
+	      logInfo.info("getListByGroup: %s", sqlStr);	
+	      
+	      pojoList= resultSetMapper.mapRersultSetToObject(rs, PolicyMatched.class);
+	      
+	    } 
+	    catch(SQLException e) 
+	    { 
+	      System.out.println("getAllList DropDB Exception :" + e.toString()); 
+	    } 
+	    finally 
+	    { 
+	      Close(); 
+	    }	
+	    return pojoList;
+	}
 	
 	private void Close() 
 	{ 

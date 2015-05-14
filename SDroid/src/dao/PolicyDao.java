@@ -120,6 +120,30 @@ public class PolicyDao {
 	    return pojoList;
 	}
 	
+	public Policy getById(int id){
+		List<Policy> pojoList = new ArrayList<Policy>();
+		ResultSetMapper<Policy> resultSetMapper = new ResultSetMapper<Policy>();
+		sqlStr = "select * from "+tableName+" where id="+id;
+	    try 
+	    { 
+	      stat = con.createStatement(); 
+	      rs = stat.executeQuery(sqlStr); 
+	      logInfo.info("getById: %s", sqlStr);	
+	      
+	      pojoList= resultSetMapper.mapRersultSetToObject(rs, Policy.class);
+	      
+	    } 
+	    catch(SQLException e) 
+	    { 
+	      System.out.println("getAllList DropDB Exception :" + e.toString()); 
+	    } 
+	    finally 
+	    { 
+	      Close(); 
+	    }
+	    return pojoList.get(0);
+	}
+	
 	public List<Policy> getAllList(String type){
 		List<Policy> pojoList = new ArrayList<Policy>();
 		ResultSetMapper<Policy> resultSetMapper = new ResultSetMapper<Policy>();

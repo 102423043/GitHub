@@ -17,6 +17,8 @@ public class InstallTimePolicy {
 
 	private String createTime;
 	
+	private String result;
+	
 	public InstallTimePolicy(){
 		conditions = new ArrayList();
 	}
@@ -91,6 +93,16 @@ public class InstallTimePolicy {
 
 	public void setConditionStr(String conditionStr) {
 		this.conditionStr = conditionStr;
+	}
+
+
+	public String getResult() {
+		return result;
+	}
+
+
+	public void setResult(String result) {
+		this.result = result;
 	}
 	
 	

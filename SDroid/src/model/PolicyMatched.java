@@ -23,6 +23,7 @@ public class PolicyMatched {
 	@Column(name="create_time")
 	private Date createTime;
 	
+	private Application app;
 	
 	public int getId() {
 		return id;
@@ -59,6 +60,12 @@ public class PolicyMatched {
 	}
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+	public Application getApp() {
+		return app;
+	}
+	public void setApp(Application app) {
+		this.app = app;
 	}
 	
 	

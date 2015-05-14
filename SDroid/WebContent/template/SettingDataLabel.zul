@@ -1,0 +1,40 @@
+
+<vlayout apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('SDLvm') @init('viewmodel.SettingDataLabelViewModel')"
+	style="padding: 20px">
+	<hbox>
+		<label value="Run-Time 資料標籤：" />
+		<textbox id="txtLabel" width="150px" />
+		<separator spacing="10px" />
+		<button image="/img/green_+.png" width="50px" height="30px"
+			onClick="@command('insertLabel',mStr=txtLabel.value)" />
+	</hbox>
+	<!-- 資料標籤 清單 -->
+	<separator spacing="10px" />
+	<listbox model="@load(SDLvm.dataLabels)" emptyMessage="No label found."
+		mold="paging" pageSize="8" width="1000px">
+		<auxhead>
+			<auxheader colspan="4" iconSclass="icon-Posts">
+				資料標籤清單
+			</auxheader>
+		</auxhead>
+		<listhead>
+			<listheader width="5%" align="center" />
+			<listheader label="Id" sort="auto" width="10%" align="center" />
+			<listheader label="Label" sort="auto" width="35%" align="center" />
+			<listheader label="DateTime" sort="auto" width="10%"
+				align="center" />
+		</listhead>
+		<template name="model" var="label">
+			<listitem>
+				<listcell>
+					<button image="/img/red-x.png" width="50px" height="30px"
+						onClick="@command('removeLabel',mStr=label.id)" />
+				</listcell>
+				<listcell label="@load(label.labelId)" />
+				<listcell label="@load(label.label)" />
+				<listcell label="@load(label.createTime) @converter('formatedDate', format='yyyy-MM-dd')" />
+			</listitem>
+		</template>
+	</listbox>
+</vlayout>
