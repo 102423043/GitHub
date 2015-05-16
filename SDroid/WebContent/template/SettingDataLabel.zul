@@ -20,8 +20,10 @@
 		</auxhead>
 		<listhead>
 			<listheader width="5%" align="center" />
-			<listheader label="Label id" sort="auto" width="10%" align="center" />
-			<listheader label="Label name" sort="auto" width="35%" align="center" />
+			<listheader label="Label id" sort="auto" width="10%"
+				align="center" />
+			<listheader label="Label name" sort="auto" width="35%"
+				align="center" />
 			<listheader label="DateTime" sort="auto" width="10%"
 				align="center" />
 		</listhead>
@@ -33,7 +35,8 @@
 				</listcell>
 				<listcell label="@load(label.labelId)" />
 				<listcell label="@load(label.label)" />
-				<listcell label="@load(label.createTime) @converter('formatedDate', format='yyyy-MM-dd')" />
+				<listcell
+					label="@load(label.createTime) @converter('formatedDate', format='yyyy-MM-dd')" />
 			</listitem>
 		</template>
 	</listbox>

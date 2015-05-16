@@ -120,6 +120,31 @@ public class PolicyDao {
 	    return pojoList;
 	}
 	
+	public List<Policy> getListByDataLabel(String dataLabel){
+		List<Policy> pojoList = new ArrayList<Policy>();
+		ResultSetMapper<Policy> resultSetMapper = new ResultSetMapper<Policy>();
+		sqlStr = "select * from "+tableName+" where type='AppPolicy' and "+
+				 " policy like '%"+dataLabel+"%'";
+	    try 
+	    { 
+	      stat = con.createStatement(); 
+	      rs = stat.executeQuery(sqlStr); 
+	      logInfo.info("getListByDataLabel: %s", sqlStr);	
+	      
+	      pojoList= resultSetMapper.mapRersultSetToObject(rs, Policy.class);
+	      
+	    } 
+	    catch(SQLException e) 
+	    { 
+	      System.out.println("getListByDataLabel DropDB Exception :" + e.toString()); 
+	    } 
+	    finally 
+	    { 
+	      Close(); 
+	    }
+	    return pojoList;
+	}
+	
 	public Policy getById(int id){
 		List<Policy> pojoList = new ArrayList<Policy>();
 		ResultSetMapper<Policy> resultSetMapper = new ResultSetMapper<Policy>();

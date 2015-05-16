@@ -1,6 +1,6 @@
 
-<tabbox height="600px" style="padding: 20px" apply="org.zkoss.bind.BindComposer"
-	viewModel="@id('SPvm') @init('viewmodel.SettingPolicyViewModel')" >
+<tabbox height="600px" style="padding: 20px" apply="org.zkoss.bind.BindComposer" validationMessages="@id('SPvmsgs')"
+	viewModel="@id('SPvm') @init('viewmodel.SettingPolicyViewModel')"  >
 	<tabs>
 		<tab label="Install-Time 安全政策制定" iconSclass="icon-tag" />
 	</tabs>
@@ -12,8 +12,7 @@
 					<vbox>
 						<hbox>
 							<label value="Access：" />
-							<combobox id="cmbAccess" width="80px"
-								selectedItem="@bind(SPvm.installPolicy.access)">
+							<combobox id="cmbAccess" selectedItem="@save(SPvm.installPolicy.access)" width="80px">
 								<comboitem label="Allow" value="allow" />
 								<comboitem label="Deny" value="deny" />
 							</combobox>

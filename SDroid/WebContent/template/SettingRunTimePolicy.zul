@@ -73,6 +73,13 @@
 				<separator spacing="10px" />
 				<hlayout>
 					<!-- App Policy 安全政策 -->
+					<label value="Label：" />
+					<combobox id="cmbLabel" width="100px" model="@load(SRTPvm.dataLabels)"
+						selectedItem="@save(SRTPvm.appPolicy.dataLabel)">
+						<template name="model">
+							<comboitem label="@load(each)" value="@load(each)" />
+						</template>
+					</combobox>
 					<label value="Application：" />
 					<combobox id="cmbApp" width="250px" model="@load(SRTPvm.applications)"
 						selectedItem="@save(SRTPvm.appPolicy.application)">
@@ -94,12 +101,13 @@
 				<listbox model="@load(SRTPvm.appPolicies)" emptyMessage="No policies found."
 					mold="paging" pageSize="8" width="1000px">
 					<auxhead>
-						<auxheader colspan="6" iconSclass="icon-Posts">
+						<auxheader colspan="7" iconSclass="icon-Posts">
 							App Policy 安全政策清單
 						</auxheader>
 					</auxhead>
 					<listhead>
 						<listheader width="5%" align="center" />
+						<listheader label="Label" width="20%" align="center" />
 						<listheader label="Application" width="30%" align="center" />
 						<listheader label="isRead" width="10%" align="center" />
 						<listheader label="isWrite" width="10%" align="center" />
@@ -112,6 +120,7 @@
 								<button image="/img/red-x.png" width="50px" height="30px"
 									onClick="@command('removePolicy',mStr=policy.id)" />
 							</listcell>
+							<listcell label="@load(policy.dataLabel)" />
 							<listcell label="@load(policy.application)" />
 							<listcell label="@load(policy.read)" />
 							<listcell label="@load(policy.write)" />

@@ -84,6 +84,30 @@ public class DataLabelDao {
 		return res;	
 	}
 	
+	public DataLabel getById(String id){
+		List<DataLabel> pojoList = new ArrayList<DataLabel>();
+		ResultSetMapper<DataLabel> resultSetMapper = new ResultSetMapper<DataLabel>();
+		sqlStr = "select * from "+tableName+" where id="+id;
+	    try 
+	    { 
+	      stat = con.createStatement(); 
+	      rs = stat.executeQuery(sqlStr); 
+	      logInfo.info("getById: %s", sqlStr);	
+	      
+	      pojoList= resultSetMapper.mapRersultSetToObject(rs, DataLabel.class);
+	      
+	    } 
+	    catch(SQLException e) 
+	    { 
+	      System.out.println("getById DropDB Exception :" + e.toString()); 
+	    } 
+	    finally 
+	    { 
+	      Close(); 
+	    }
+	    return pojoList.get(0);
+	}
+	
 	public Integer getLastDataId() {
 		List<DataLabel> pojoList = new ArrayList<DataLabel>();
 		ResultSetMapper<DataLabel> resultSetMapper = new ResultSetMapper<DataLabel>();

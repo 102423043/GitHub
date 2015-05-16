@@ -6,15 +6,19 @@ import java.util.List;
 
 import model.AppPolicy;
 import model.Application;
+import model.DataLabel;
 import model.Policy;
 import model.RunTimePolicy;
 
+import org.apache.commons.lang3.StringUtils;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.zul.ListModelList;
+import org.zkoss.zul.Messagebox;
 
 import dao.ApplicationDao;
+import dao.DataLabelDao;
 import dao.PolicyDao;
 import util.LogInfo;
 import util.ParseXML;
@@ -26,6 +30,7 @@ public class SettingRunTimePolicyViewModel {
 	//Dao
 	private ApplicationDao aDao;
 	private PolicyDao plDao;
+	private DataLabelDao dlDao;
 	//Util
 	private ParseXML parseXML;
 	private LogInfo logInfo;
@@ -33,6 +38,7 @@ public class SettingRunTimePolicyViewModel {
 	private List<String> applications;
 	private List<RunTimePolicy> runTimePolicies;
 	private List<AppPolicy> appPolicies;
+	private List<String> dataLabels;
 	
 	/**
 	 * 功能: 初始化設定
@@ -44,6 +50,7 @@ public class SettingRunTimePolicyViewModel {
 		
 		aDao = new ApplicationDao();
 		plDao = new PolicyDao();
+		dlDao = new DataLabelDao();
 		
 		parseXML = new ParseXML();
 		logInfo = new LogInfo();
@@ -51,6 +58,7 @@ public class SettingRunTimePolicyViewModel {
 		applications = new ArrayList<String>();
 		runTimePolicies = new ListModelList<RunTimePolicy>();
 		appPolicies = new ListModelList<AppPolicy>();
+		dataLabels = new ArrayList<String>();
 		
 		loadData();
 	}
@@ -60,6 +68,11 @@ public class SettingRunTimePolicyViewModel {
 		List<Application> appList = aDao.getAllList();
 		for(Application app: appList){
 			applications.add(app.getAppLabel());
+		}
+		
+		List<DataLabel> dataList = dlDao.getAllList();
+		for(DataLabel data: dataList){
+			dataLabels.add(data.getLabelId());
 		}
 		
 		getPolicyList("RunTimePolicy");
@@ -112,6 +125,10 @@ public class SettingRunTimePolicyViewModel {
 			policy.setPolicy(runTimeXML);
 			break;
 		case "AppPolicy":
+			if(validator(type)){
+				Messagebox.show("資料欄位不可為空");
+				return;
+			}
 			String appXML = parseXML.RunTimeOrAppObjParseToXML(appPolicy,type);
 			policy.setPolicy(appXML);
 			break;
@@ -119,6 +136,7 @@ public class SettingRunTimePolicyViewModel {
 		
 		policy.setType(type);
 		plDao.insert(policy);
+		
 		getPolicyList(type);
 	}
 	
@@ -129,8 +147,29 @@ public class SettingRunTimePolicyViewModel {
 	public void removePolicy(@BindingParam("mStr")String id) {
 		
 		plDao.removeById(id);
+		Messagebox.show("Policy刪除成功");
+		
 		getPolicyList("RunTimePolicy");
 		getPolicyList("AppPolicy");
+	}
+	
+	/**
+	 * 功能: 驗證資料欄位
+	 * */
+	private boolean validator(String type){
+		boolean check = false;
+		
+		switch(type){
+		case "RunTimePolicy":
+			break;
+		case "AppPolicy":
+			if(StringUtils.isBlank(appPolicy.getDataLabel()) || StringUtils.isBlank(appPolicy.getApplication())){
+				check = true;
+			}
+			break;
+		}
+		
+		return check;
 	}
 	
 	/**
@@ -155,7 +194,10 @@ public class SettingRunTimePolicyViewModel {
 	public List<AppPolicy> getAppPolicies() {
 		return appPolicies;
 	}
-	
+
+	public List<String> getDataLabels() {
+		return dataLabels;
+	}
 	
 	
 }

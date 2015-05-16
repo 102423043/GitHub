@@ -6,8 +6,8 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 public class AppPolicy {
 
 	private Integer id;
-	private String label;
 	private String application;
+	private String dataLabel;
 	private boolean read;
 	private boolean write;
 	private boolean execute;
@@ -19,12 +19,6 @@ public class AppPolicy {
 	}
 	public void setId(Integer id) {
 		this.id = id;
-	}
-	public String getLabel() {
-		return label;
-	}
-	public void setLabel(String label) {
-		this.label = label;
 	}
 	public String getApplication() {
 		return application;
@@ -55,6 +49,12 @@ public class AppPolicy {
 	}
 	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
+	}
+	public String getDataLabel() {
+		return dataLabel;
+	}
+	public void setDataLabel(String dataLabel) {
+		this.dataLabel = dataLabel;
 	}	
 
 }

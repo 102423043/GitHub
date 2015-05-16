@@ -11,6 +11,7 @@ import model.Permission;
 import model.Policy;
 import model.PolicyMatched;
 
+import org.apache.commons.lang3.StringUtils;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
@@ -19,6 +20,8 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.MouseEvent;
 import org.zkoss.zk.ui.select.annotation.Listen;
+import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zul.AbstractListModel;
 import org.zkoss.zul.Box;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Label;
@@ -60,7 +63,7 @@ public class SettingPolicyViewModel {
 	private List<String> actions;
 	private List<String> components;
 	private List<InstallTimePolicy> installTimePolicies;
-
+	
 	/**
 	 * 功能: 初始化設定
 	 * */
@@ -78,9 +81,9 @@ public class SettingPolicyViewModel {
 
 		parseXML = new ParseXML();
 		logInfo = new LogInfo();
-
-		applications = new ArrayList<String>();
-		permissions = new ArrayList<String>();
+		
+		applications = new ListModelList<String>();
+		permissions = new ListModelList<String>();
 		conditions = new ArrayList<String>();
 		types = new ArrayList<String>();
 		actions = new ArrayList<String>();
@@ -100,12 +103,13 @@ public class SettingPolicyViewModel {
 		for (Permission per : perList) {
 			permissions.add(per.getPermission());
 		}
+		
 		List<Application> appList = aDao.getAllList();
 		applications.add("any");
 		for (Application app : appList) {
 			applications.add(app.getAppLabel());
 		}
-
+		
 		getInstallPolicyList();
 	}
 
@@ -133,8 +137,12 @@ public class SettingPolicyViewModel {
 	 * */
 	@Command
 	public void insertPolicy() {
-		Policy policy;
-
+		
+		if(validator()){
+			Messagebox.show("資料欄位不可為空");
+			return;
+		}
+		
 		installPolicy.getConditions().clear();
 		if (minVersion.getValue() != null) {
 			minVersion.setName("minVersion");
@@ -142,7 +150,7 @@ public class SettingPolicyViewModel {
 		}
 
 		String policyXML = parseXML.InstallObjParseToXML(installPolicy);
-		policy = new Policy();
+		Policy policy = new Policy();
 		policy.setType("installTime");
 		policy.setPolicy(policyXML);
 
@@ -150,10 +158,11 @@ public class SettingPolicyViewModel {
 		getInstallPolicyList();
 
 	}
-
+	
 	/**
 	 * 功能: 刪除安全政策
 	 * */
+	@SuppressWarnings("unchecked")
 	@Command
 	public void removePolicy(@BindingParam("mStr") final String id) {
 
@@ -180,6 +189,22 @@ public class SettingPolicyViewModel {
 		getInstallPolicyList();
 	}
 
+	/**
+	 * 功能: 驗證資料欄位
+	 * */
+	private boolean validator(){
+		boolean check = false;
+		
+		if(StringUtils.isBlank(installPolicy.getApplication()) 
+				|| StringUtils.isBlank(installPolicy.getPermission()) 
+				|| StringUtils.isBlank(installPolicy.getAccess())){
+			check = true;
+		}
+		
+		return check;
+	}
+	
+	
 	/**
 	 * Setter & Getter 物件
 	 * */
