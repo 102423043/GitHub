@@ -17,7 +17,7 @@ import dao.PolicyDao;
 import dao.PolicyMatchedDao;
 
 /**
- * 政策比對機制
+ * SDroid政策比對機制(重要)
  * */
 public class PolicyMatchedUtil {
 
@@ -49,14 +49,17 @@ public class PolicyMatchedUtil {
 	}
 
 	/**
-	 * 功能: 政策比對分析 pkName：Android package name
+	 * 功能: 政策比對分析(主要執行程式)
+	 * pkName：Android package name
 	 * */
 	public String analysisPolicyMatched(String pkName) {
 
 		String status = config.getPropValue("allow");
 		Application app = aDao.findByPkName(pkName);
 
+		// Application Table 沒有該pkName資料
 		if (app == null) {
+			//使用APK Downloader 取的該pkName資料
 			apkDownload.SearchAPKFromGooglePlay(pkName);
 			app = apkDownload.getApplication();
 		}
@@ -64,6 +67,7 @@ public class PolicyMatchedUtil {
 		List<Policy> pList = plDao.getListByAppName(app.getAppLabel());
 		if (pList.size() > 0) {
 			// 有Policies
+			pmDao.removeByAid(app.getId());
 			for (Policy p : pList) {
 				String result = null;
 				InstallTimePolicy itp = (InstallTimePolicy) parseXML
@@ -84,9 +88,11 @@ public class PolicyMatchedUtil {
 	}
 
 	/**
-	 * 功能: 政策比對 itp： 比對的policy app: 比對的Application
+	 * 功能: 政策比對 
+	 * itp: 欲比對的policy 
+	 * app: 欲比對的Application
 	 * */
-	public String matchedPolicy(InstallTimePolicy itp, Application app) {
+	private String matchedPolicy(InstallTimePolicy itp, Application app) {
 
 		String status = null;
 		switch (itp.getAccess()) {
@@ -116,9 +122,11 @@ public class PolicyMatchedUtil {
 	}
 
 	/**
-	 * 功能: App版本比對 conVersion： Policy規定的最小版本號 appVersion: Application目前的版本號
+	 * 功能: App版本比對 
+	 * conVersion： Policy規定的最小版本號 
+	 * appVersion: Application目前的版本號
 	 * */
-	public boolean compareMinVersion(String conVersion, String appVersion) {
+	private boolean compareMinVersion(String conVersion, String appVersion) {
 
 		int aValue = 0;
 		boolean compare = false;
@@ -149,10 +157,12 @@ public class PolicyMatchedUtil {
 	}
 
 	/**
-	 * 功能: 儲存PolicyMatched Table policy_id: Policy id app_id: Application id
+	 * 功能: 儲存PolicyMatched Table
+	 * policy_id: Policy id 
+	 * app_id: Application id
 	 * result: 分析結果
 	 * */
-	public void savePolicyMatched(int pId, int aId, String result) {
+	private void savePolicyMatched(int pId, int aId, String result) {
 		PolicyMatched pm = new PolicyMatched();
 		pm.setPolicyId(pId);
 		pm.setAppId(aId);

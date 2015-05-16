@@ -20,8 +20,8 @@
 		</auxhead>
 		<listhead>
 			<listheader width="5%" align="center" />
-			<listheader label="Id" sort="auto" width="10%" align="center" />
-			<listheader label="Label" sort="auto" width="35%" align="center" />
+			<listheader label="Label id" sort="auto" width="10%" align="center" />
+			<listheader label="Label name" sort="auto" width="35%" align="center" />
 			<listheader label="DateTime" sort="auto" width="10%"
 				align="center" />
 		</listhead>

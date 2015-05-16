@@ -6,7 +6,7 @@
 		<tab label="App Policy" iconSclass="icon-tag" />
 	</tabs>
 	<tabpanels>
-		<tabpanel>
+		<tabpanel style="background-color: white;">
 			<vlayout>
 				<separator spacing="10px" />
 				<hlayout>
@@ -68,7 +68,7 @@
 				</listbox>
 			</vlayout>
 		</tabpanel>
-		<tabpanel>
+		<tabpanel style="background-color: white;">
 			<vlayout>
 				<separator spacing="10px" />
 				<hlayout>

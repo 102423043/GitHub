@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import model.Policy;
 import model.PolicyMatched;
 import util.JDBCmysql;
 import util.LogInfo;
@@ -60,6 +59,35 @@ public class PolicyMatchedDao {
 		return res;			
 	}
 	
+	public boolean removeByAid(int aId){
+		boolean res = false;   
+		
+		String sqlStr = "DELETE FROM "+tableName+" WHERE app_id="+aId;
+		
+	    try 
+	    { 
+	      stat = con.createStatement(); 
+	      int check = stat.executeUpdate(sqlStr); 
+	      System.out.println("removeByAid SQL:"+sqlStr);	
+	      
+	      if(check !=0)
+	      {
+	    	  res = true;
+	      }
+	      
+	    } 
+	    catch(SQLException e) 
+	    { 
+	      System.out.println("removeByAid DropDB Exception :" + e.toString()); 
+	    } 
+	    finally 
+	    { 
+	      Close(); 
+	    }		
+		
+		return res;	
+	}
+	
 	public boolean removeByPid(String pId){
 		boolean res = false;   
 		
@@ -69,7 +97,7 @@ public class PolicyMatchedDao {
 	    { 
 	      stat = con.createStatement(); 
 	      int check = stat.executeUpdate(sqlStr); 
-	      System.out.println("removeSQL:"+sqlStr);	
+	      System.out.println("removeByPid SQL:"+sqlStr);	
 	      
 	      if(check !=0)
 	      {

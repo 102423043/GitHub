@@ -1,11 +1,11 @@
 
 <tabbox height="600px" style="padding: 20px" apply="org.zkoss.bind.BindComposer"
-	viewModel="@id('SPvm') @init('viewmodel.SettingPolicyViewModel')">
+	viewModel="@id('SPvm') @init('viewmodel.SettingPolicyViewModel')" >
 	<tabs>
 		<tab label="Install-Time 安全政策制定" iconSclass="icon-tag" />
 	</tabs>
 	<tabpanels>
-		<tabpanel>
+		<tabpanel style="background-color: white;">
 			<vlayout>
 				<separator spacing="10px" />
 				<hlayout>

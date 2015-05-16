@@ -30,8 +30,8 @@
 		</listbox>
 		<vlayout style="padding-left: 10px">
 			<!-- Application -->
-			<groupbox closable="false" width="800px">
-				<caption label="Application 詳細資訊" />
+			<panel title="Application 詳細資訊" border="normal" width="800px">
+				<panelchildren>
 				<hlayout>
 					<vlayout>
 						<!-- 分析結果 -->
@@ -75,11 +75,12 @@
 						</hbox>
 					</vlayout>
 				</hlayout>
-			</groupbox>
+				</panelchildren>
+			</panel>
 			<separator spacing="5px" />
 			<!-- Policy 清單 -->
 			<listbox model="@load(PMvm.installTimePolicies)" width="800px"
-				emptyMessage="No policies found." mold="paging" pageSize="4">
+				emptyMessage="No policies found." mold="paging" pageSize="6">
 				<auxhead>
 					<auxheader colspan="6" iconSclass="icon-Posts">
 						Install-Time 安全政策清單
