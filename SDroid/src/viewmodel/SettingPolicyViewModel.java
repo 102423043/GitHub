@@ -144,7 +144,7 @@ public class SettingPolicyViewModel {
 		}
 		
 		installPolicy.getConditions().clear();
-		if (minVersion.getValue() != null) {
+		if (!StringUtils.isBlank(minVersion.getValue())) {
 			minVersion.setName("minVersion");
 			installPolicy.getConditions().add(minVersion);
 		}

@@ -78,6 +78,7 @@ public class InstallTimePolicy {
 
 	public String getConditionStr() {
 		if(conditions.size()>0){
+			conditionStr = "";
 			for(int i =0; i<conditions.size(); i++){
 				Condition condition = conditions.get(i);
 				if(i == conditions.size()-1){

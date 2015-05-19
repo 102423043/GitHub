@@ -107,7 +107,7 @@
 						<listcell label="@load(policy.permission)" />
 						<listcell label="@load(policy.conditionStr)" />
 						<listcell label="@load(policy.createTime)" />
-						<listcell label="@load(policy.result)" />
+						<listcell label="@load(policy.result)" style="@load(policy.result eq 'success'? 'color:blue':'color:red' )" />
 					</listitem>
 				</template>
 			</listbox>

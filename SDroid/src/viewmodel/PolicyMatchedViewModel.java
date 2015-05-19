@@ -28,6 +28,7 @@ import dao.ApplicationDao;
 import dao.PolicyDao;
 import dao.PolicyMatchedDao;
 import util.APKDownload;
+import util.ConfigFile;
 import util.LogInfo;
 import util.ParseXML;
 import util.PolicyMatchedUtil;
@@ -43,6 +44,7 @@ public class PolicyMatchedViewModel {
 	private PolicyMatchedDao pmDao;
 	// Util
 	private LogInfo logInfo;
+	private ConfigFile config;
 	private ParseXML parseXML;
 	private APKDownload apkDownload;
 	// ListView
@@ -79,6 +81,7 @@ public class PolicyMatchedViewModel {
 		pmDao = new PolicyMatchedDao();
 
 		logInfo = new LogInfo();
+		config = new ConfigFile();
 		parseXML = new ParseXML();
 		apkDownload = new APKDownload();
 
@@ -125,7 +128,7 @@ public class PolicyMatchedViewModel {
 			itp.setCreateTime(sdf.format(p.getCreateTime()));
 			itp.setResult(pm.getResult());
 			installTimePolicies.add(itp);
-			if (pm.getResult().equals("failure")) {
+			if (pm.getResult().equals(config.getPropValue("deny"))) {
 				check = true;
 			}
 		}
@@ -191,6 +194,14 @@ public class PolicyMatchedViewModel {
 
 	public Application getApplication() {
 		return application;
+	}
+
+	public ConfigFile getConfig() {
+		return config;
+	}
+
+	public void setConfig(ConfigFile config) {
+		this.config = config;
 	}
 
 	@AfterCompose
