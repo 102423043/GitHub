@@ -56,6 +56,7 @@
 							<label id="size" />
 						</hbox>
 					</vlayout>
+					<separator spacing="10px" />
 					<vlayout>
 						<hbox>
 							<label />
@@ -82,7 +83,7 @@
 			<listbox model="@load(PMvm.installTimePolicies)" width="800px"
 				emptyMessage="No policies found." mold="paging" pageSize="6">
 				<auxhead>
-					<auxheader colspan="6" iconSclass="icon-Posts">
+					<auxheader colspan="5" iconSclass="icon-Posts">
 						Install-Time 安全政策清單
 					</auxheader>
 				</auxhead>
@@ -91,11 +92,9 @@
 						align="center" />
 					<listheader label="Application" sort="auto" width="20%"
 						align="center" />
-					<listheader label="Permission" sort="auto" width="25%"
+					<listheader label="Permission" sort="auto" width="40%"
 						align="center" />
-					<listheader label="Other conditions" sort="auto" width="25%"
-						align="center" />
-					<listheader label="DateTime" sort="auto" width="10%"
+					<listheader label="Other conditions" sort="auto" width="20%"
 						align="center" />
 					<listheader label="Result" sort="auto" width="10%"
 						align="center" />
@@ -106,7 +105,6 @@
 						<listcell label="@load(policy.application)" />
 						<listcell label="@load(policy.permission)" />
 						<listcell label="@load(policy.conditionStr)" />
-						<listcell label="@load(policy.createTime)" />
 						<listcell label="@load(policy.result)" style="@load(policy.result eq 'success'? 'color:blue':'color:red' )" />
 					</listitem>
 				</template>

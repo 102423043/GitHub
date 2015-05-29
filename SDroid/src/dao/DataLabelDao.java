@@ -111,7 +111,7 @@ public class DataLabelDao {
 	public Integer getLastDataId() {
 		List<DataLabel> pojoList = new ArrayList<DataLabel>();
 		ResultSetMapper<DataLabel> resultSetMapper = new ResultSetMapper<DataLabel>();
-		sqlStr = "select top 1 * from " + tableName + " order by id desc";
+		sqlStr = "select * from " + tableName + " order by id desc limit 1";
 
 		try {
 			stat = con.createStatement();
@@ -121,7 +121,7 @@ public class DataLabelDao {
 			pojoList = resultSetMapper.mapRersultSetToObject(rs, DataLabel.class);
 
 		} catch (SQLException e) {
-			System.out.println("getAllList DropDB Exception :" + e.toString());
+			System.out.println("getLastDataId DropDB Exception :" + e.toString());
 		} finally {
 			Close();
 		}
