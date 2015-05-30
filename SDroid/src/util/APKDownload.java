@@ -85,6 +85,7 @@ public class APKDownload {
 		application.setContactEmail(app.getExtendedInfoOrBuilder().getContactEmail());
 		application.setContactWebsite(app.getExtendedInfoOrBuilder().getContactWebsite());
 		int aId =aDao.insert(application);
+		application.setId(aId);
 		
 		//新增Permission
 		List<Integer> pIdList = new ArrayList<Integer>();

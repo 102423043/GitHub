@@ -97,7 +97,7 @@ public class PolicyMatchedUtil {
 		String status = null;
 		switch (itp.getAccess()) {
 		case "allow":
-			if (itp.getPermission().equals("any")) {
+//			if (itp.getPermission().equals("any")) {
 				if (itp.getConditions().size() > 0) {
 					String cMinVersion = itp.getConditions().get(0).getValue(); // min-Version
 					if (compareMinVersion(cMinVersion, app.getVersion())) {
@@ -106,15 +106,19 @@ public class PolicyMatchedUtil {
 						status = config.getPropValue("deny");
 					}
 				}
-			}
+//			}
 			break;
 		case "deny":
-			Permission p = pDao.getByPermission(itp.getPermission());
-			AndroidManifest amf = amfDao.findByIds(app.getId(), p.getId());
-			if (amf != null) {
+			if(itp.getPermission() == "any"){
 				status = config.getPropValue("deny");
-			} else {
-				status = config.getPropValue("allow");
+			}else{
+				Permission p = pDao.getByPermission(itp.getPermission());
+				AndroidManifest amf = amfDao.findByIds(app.getId(), p.getId());
+				if (amf != null) {
+					status = config.getPropValue("deny");
+				} else {
+					status = config.getPropValue("allow");
+				}
 			}
 			break;
 		}

@@ -55,7 +55,7 @@ public class HttpServer extends HttpServlet {
 		endTime = System.currentTimeMillis();
 		totTime = endTime - startTime;
 		
-		writerTxt(pkname+";Using Time: "+ totTime/1000 +"sec");
+		writerTxt(pkname,"Using Time: "+ totTime/1000 +"sec");
 	}
 
 	protected void doPost(HttpServletRequest request,
@@ -63,11 +63,11 @@ public class HttpServer extends HttpServlet {
 		doGet(request, response);
 	}
 	
-	private void writerTxt(String str){
+	private void writerTxt(String pkname, String str){
 		BufferedWriter fw = null;
 		
 		try{
-			File file = new File("c://testLog.txt");
+			File file = new File("c://"+pkname+".txt");
 			fw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, true), "UTF-8")); 
 			fw.append(str);
 			fw.flush(); 
