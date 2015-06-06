@@ -130,6 +130,9 @@ public class PermissionDao {
 		} catch (SQLException e) {
 			System.out.println("getAllList DropDB Exception :" + e.toString());
 		} finally {
+			if(pojoList == null){
+				pojoList = new ArrayList<Permission>();
+			}
 			Close();
 		}
 		return pojoList;

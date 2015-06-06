@@ -105,6 +105,8 @@ public class PolicyMatchedUtil {
 					} else {
 						status = config.getPropValue("deny");
 					}
+				}else{
+					status = config.getPropValue("allow");
 				}
 //			}
 			break;

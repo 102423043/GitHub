@@ -170,7 +170,7 @@ public class PolicyMatchedDao {
 	public List<PolicyMatched> getListByGroup(){
 		List<PolicyMatched> pojoList = new ArrayList<PolicyMatched>();
 		ResultSetMapper<PolicyMatched> resultSetMapper = new ResultSetMapper<PolicyMatched>();
-		String sqlStr = "select * from "+tableName +" group by app_id";
+		String sqlStr = "select * from "+tableName +" group by app_id order by create_time desc";
 	    try 
 	    { 
 	      stat = con.createStatement(); 

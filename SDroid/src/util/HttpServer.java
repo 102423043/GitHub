@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.jfree.util.Log;
+
 /**
  * 訊息通知，負責接收從App agent的訊息，並回傳分析結果
  * */
@@ -23,10 +25,12 @@ public class HttpServer extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	private PolicyMatchedUtil pmUtil;
+	private LogInfo log;
 	
 	public HttpServer() {
 		super();
 		pmUtil = new PolicyMatchedUtil();
+		log = new LogInfo();
 	}
 
 	protected void doGet(HttpServletRequest request,
@@ -41,8 +45,6 @@ public class HttpServer extends HttpServlet {
         {
             System.out.println(e);
         }
-		
-		LogInfo log = new LogInfo();
 		
 		String pkname = request.getParameter("pkName");
 		log.info("pkname: %s", pkname);
@@ -65,9 +67,10 @@ public class HttpServer extends HttpServlet {
 	
 	private void writerTxt(String pkname, String str){
 		BufferedWriter fw = null;
+		log.info("start writerTxt %s", pkname);
 		
 		try{
-			File file = new File("c://"+pkname+".txt");
+			File file = new File("E://"+pkname+".txt");
 			fw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, true), "UTF-8")); 
 			fw.append(str);
 			fw.flush(); 
@@ -76,6 +79,7 @@ public class HttpServer extends HttpServlet {
 		}finally{
 			try {
 				fw.close();
+				log.info("end writerTxt %s", pkname);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

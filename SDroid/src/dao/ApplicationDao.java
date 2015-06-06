@@ -150,6 +150,9 @@ public class ApplicationDao {
 		} catch (SQLException e) {
 			System.out.println("getAllList DropDB Exception :" + e.toString());
 		} finally {
+			if(pojoList == null){
+				pojoList = new ArrayList<Application>();
+			}
 			Close();
 		}
 		return pojoList;

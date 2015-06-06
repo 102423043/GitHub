@@ -7,7 +7,7 @@ public class RunTimePolicy {
 
 	private Integer id;
 	private String access;
-	private String label;
+	private String dataLabel;
 	private String sourceApplication;
 	private String destinationApplication;
 	private String createTime;
@@ -25,11 +25,12 @@ public class RunTimePolicy {
 	public void setAccess(String access) {
 		this.access = access;
 	}
-	public String getLabel() {
-		return label;
+
+	public String getDataLabel() {
+		return dataLabel;
 	}
-	public void setLabel(String label) {
-		this.label = label;
+	public void setDataLabel(String dataLabel) {
+		this.dataLabel = dataLabel;
 	}
 	public String getSourceApplication() {
 		return sourceApplication;

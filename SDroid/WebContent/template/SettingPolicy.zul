@@ -1,11 +1,11 @@
 
-<tabbox height="600px" style="padding: 20px" apply="org.zkoss.bind.BindComposer" validationMessages="@id('SPvmsgs')"
+<tabbox height="600px" style="padding: 20px" apply="org.zkoss.bind.BindComposer"
 	viewModel="@id('SPvm') @init('viewmodel.SettingPolicyViewModel')"  >
 	<tabs>
-		<tab label="Install-Time 安全政策制定" iconSclass="icon-tag" />
+		<tab label="Install-Time 安全政策制定" />
 	</tabs>
 	<tabpanels>
-		<tabpanel style="background-color: white;">
+		<tabpanel style="background-color: white; padding:20px;">
 			<vlayout>
 				<separator spacing="10px" />
 				<hlayout>
@@ -108,11 +108,11 @@
 					</auxhead>
 					<listhead>
 						<listheader width="5%" align="center" />
-						<listheader label="Access" sort="auto" width="10%" align="center" />
-						<listheader label="Application" sort="auto" width="20%" align="center" />
-						<listheader label="Permission" sort="auto" width="20%" align="center" />
-						<listheader label="Other conditions" sort="auto" width="35%" align="center" />
-						<listheader label="DateTime" sort="auto" width="10%" align="center" />
+						<listheader label="Access" width="10%" align="center" />
+						<listheader label="Application" width="20%" align="center" />
+						<listheader label="Permission" width="35%" align="center" />
+						<listheader label="Other conditions" width="20%" align="center" />
+						<listheader label="DateTime" width="10%" align="center" />
 					</listhead>
 					<template name="model" var="policy">
 						<listitem>
