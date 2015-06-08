@@ -36,7 +36,8 @@
 				onClick="@command('goToSettingLabel', hStr=self.label)" />				
 			<navitem iconSclass="icon icon-white icon-signal" label="政策比對機制"
 				onClick="@command('goToPolicyMatched', hStr=self.label)" />
-
+			<navitem iconSclass="icon icon-white icon-signal" label="已註冊行動裝置"
+				onClick="@command('goToRegisteredDevice', hStr=self.label)" />
 		</navbar>
 	
 

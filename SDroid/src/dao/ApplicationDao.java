@@ -117,7 +117,7 @@ public class ApplicationDao {
 		try {
 			stat = con.createStatement();
 			rs = stat.executeQuery(sqlStr);
-			logInfo.info("getListById: %s", sqlStr);
+//			logInfo.info("getListById: %s", sqlStr);
 
 			pojoList = resultSetMapper.mapRersultSetToObject(rs,
 					Application.class);

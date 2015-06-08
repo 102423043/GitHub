@@ -64,6 +64,13 @@ public class IndexViewModel{
 		pageContent.setSrc("/template/SettingDataLabel.zul");
 	}
 
+	@Command
+	public void goToRegisteredDevice(@BindingParam("hStr") String header){
+		title.setValue(header);
+		subTitle.setValue(header);
+		pageContent.setSrc("/template/RegisteredDevice.zul");
+	}
+	
 	
 		
 	private void showNotify(String msg, Component ref) {
