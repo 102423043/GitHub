@@ -72,7 +72,7 @@ public class SettingRunTimePolicyViewModel {
 
 		List<Label> dataList = dlDao.getAllList();
 		for (Label data : dataList) {
-			dataLabels.add(data.getLabelId());
+			dataLabels.add(data.getLabel());
 		}
 
 		getPolicyList("RunTimePolicy");
