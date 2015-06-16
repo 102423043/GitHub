@@ -25,6 +25,9 @@ import util.ParseXML;
 
 public class SettingRunTimePolicyViewModel {
 	// Model
+	private Label label;
+	private Application sourceApplication;
+	private Application destinationApplication;
 	private RunTimePolicy runTimePolicy;
 	private AppPolicy appPolicy;
 	// Dao
@@ -33,18 +36,20 @@ public class SettingRunTimePolicyViewModel {
 	private LabelDao dlDao;
 	// Util
 	private ParseXML parseXML;
-	private LogInfo logInfo;
 	// ListView
-	private List<String> applications;
+	private List<Application> applications;
 	private List<RunTimePolicy> runTimePolicies;
 	private List<AppPolicy> appPolicies;
-	private List<String> dataLabels;
+	private List<Label> dataLabels;
 
 	/**
 	 * 功能: 初始化設定
 	 * */
 	@Init
 	public void init() {
+		label = new Label();
+		sourceApplication = new Application();
+		destinationApplication = new Application();
 		runTimePolicy = new RunTimePolicy();
 		appPolicy = new AppPolicy();
 
@@ -53,27 +58,19 @@ public class SettingRunTimePolicyViewModel {
 		dlDao = new LabelDao();
 
 		parseXML = new ParseXML();
-		logInfo = new LogInfo();
 
-		applications = new ArrayList<String>();
+		applications = new ArrayList<Application>();
 		runTimePolicies = new ListModelList<RunTimePolicy>();
 		appPolicies = new ListModelList<AppPolicy>();
-		dataLabels = new ArrayList<String>();
+		dataLabels = new ArrayList<Label>();
 
 		loadData();
 	}
 
 	public void loadData() {
 
-		List<Application> appList = aDao.getAllList();
-		for (Application app : appList) {
-			applications.add(app.getAppLabel());
-		}
-
-		List<Label> dataList = dlDao.getAllList();
-		for (Label data : dataList) {
-			dataLabels.add(data.getLabel());
-		}
+		applications = aDao.getAllList();
+		dataLabels = dlDao.getAllList();
 
 		getPolicyList("RunTimePolicy");
 		getPolicyList("AppPolicy");
@@ -92,7 +89,14 @@ public class SettingRunTimePolicyViewModel {
 				for (Policy p : pList) {
 					RunTimePolicy rtp = (RunTimePolicy) parseXML
 							.XMLParseToRunTimeOrAppObj(p.getPolicy(), type);
+					Application sourceApp = aDao.findByPkName(rtp.getSourceApplication());
+					Application destApp = aDao.findByPkName(rtp.getDestinationApplication());
+					Label label = dlDao.getByLabelId(rtp.getDataLabel());
+					
 					rtp.setId(p.getId());
+					rtp.setDataLabel(label.getLabel());
+					rtp.setSourceApplication(sourceApp.getAppLabel());
+					rtp.setDestinationApplication(destApp.getAppLabel());
 					rtp.setCreateTime(new SimpleDateFormat("yyyy/MM/dd")
 							.format(p.getCreateTime()));
 					runTimePolicies.add(rtp);
@@ -105,7 +109,12 @@ public class SettingRunTimePolicyViewModel {
 				for (Policy p : pList) {
 					AppPolicy ap = (AppPolicy) parseXML
 							.XMLParseToRunTimeOrAppObj(p.getPolicy(), type);
+					Label label = dlDao.getByLabelId(ap.getDataLabel());
+					Application app = aDao.findByPkName(ap.getApplication());
+					
 					ap.setId(p.getId());
+					ap.setDataLabel(label.getLabel());
+					ap.setApplication(app.getAppLabel());
 					ap.setCreateTime(new SimpleDateFormat("yyyy/MM/dd")
 							.format(p.getCreateTime()));
 					appPolicies.add(ap);
@@ -125,15 +134,24 @@ public class SettingRunTimePolicyViewModel {
 		switch (type) {
 
 		case "RunTimePolicy":
+			if (validator(type)) {
+				Messagebox.show("資料欄位不可為空！");
+				return;
+			}
+			runTimePolicy.setDataLabel(label.getLabelId());
+			runTimePolicy.setSourceApplication(sourceApplication.getPkName());
+			runTimePolicy.setDestinationApplication(destinationApplication.getPkName());
 			String runTimeXML = parseXML.RunTimeOrAppObjParseToXML(
 					runTimePolicy, type);
 			policy.setPolicy(runTimeXML);
 			break;
 		case "AppPolicy":
 			if (validator(type)) {
-				Messagebox.show("資料欄位不可為空");
+				Messagebox.show("資料欄位不可為空！");
 				return;
 			}
+			appPolicy.setDataLabel(label.getLabelId());
+			appPolicy.setApplication(sourceApplication.getPkName());
 			String appXML = parseXML.RunTimeOrAppObjParseToXML(appPolicy, type);
 			policy.setPolicy(appXML);
 			break;
@@ -166,10 +184,16 @@ public class SettingRunTimePolicyViewModel {
 
 		switch (type) {
 		case "RunTimePolicy":
+			if(StringUtils.isBlank(runTimePolicy.getAccess())
+					|| StringUtils.isBlank(label.getLabelId())
+					|| StringUtils.isBlank(sourceApplication.getPkName())
+					|| StringUtils.isBlank(destinationApplication.getPkName())){
+				check = true;
+			}
 			break;
 		case "AppPolicy":
-			if (StringUtils.isBlank(appPolicy.getDataLabel())
-					|| StringUtils.isBlank(appPolicy.getApplication())) {
+			if (StringUtils.isBlank(label.getLabelId())
+					|| StringUtils.isBlank(sourceApplication.getPkName())) {
 				check = true;
 			}
 			break;
@@ -189,7 +213,7 @@ public class SettingRunTimePolicyViewModel {
 		return appPolicy;
 	}
 
-	public List<String> getApplications() {
+	public List<Application> getApplications() {
 		return applications;
 	}
 
@@ -201,8 +225,32 @@ public class SettingRunTimePolicyViewModel {
 		return appPolicies;
 	}
 
-	public List<String> getDataLabels() {
+	public List<Label> getDataLabels() {
 		return dataLabels;
+	}
+
+	public Label getLabel() {
+		return label;
+	}
+
+	public void setLabel(Label label) {
+		this.label = label;
+	}
+
+	public Application getSourceApplication() {
+		return sourceApplication;
+	}
+
+	public void setSourceApplication(Application sourceApplication) {
+		this.sourceApplication = sourceApplication;
+	}
+
+	public Application getDestinationApplication() {
+		return destinationApplication;
+	}
+
+	public void setDestinationApplication(Application destinationApplication) {
+		this.destinationApplication = destinationApplication;
 	}
 
 }

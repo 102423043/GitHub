@@ -19,9 +19,9 @@
 					<separator spacing="10px" />
 					<label value="Label：" />
 					<combobox id="cmbLabel" width="100px" model="@load(SRTPvm.dataLabels)"
-						selectedItem="@save(SRTPvm.runTimePolicy.dataLabel)">
-						<template name="model">
-							<comboitem label="@load(each)" value="@load(each)" />
+						selectedItem="@save(SRTPvm.label)">
+						<template name="model" var="dl">
+							<comboitem label="@load(dl.label)" value="@load(dl.labelId)" />
 						</template>
 					</combobox>				
 				</hbox>
@@ -29,17 +29,17 @@
 				<hbox>
 					<label value="Source Application：" />
 					<combobox id="cmbSourceApp" width="250px"
-						model="@load(SRTPvm.applications)" selectedItem="@save(SRTPvm.runTimePolicy.sourceApplication)">
-						<template name="model">
-							<comboitem label="@load(each)" />
+						model="@load(SRTPvm.applications)" selectedItem="@save(SRTPvm.sourceApplication)">
+						<template name="model" var="app">
+							<comboitem label="@load(app.appLabel)" />
 						</template>
 					</combobox>
 					<separator spacing="10px" />
 					<label value="Destination Application：" />
 					<combobox id="cmbDestApp" width="250px"
-						model="@load(SRTPvm.applications)" selectedItem="@save(SRTPvm.runTimePolicy.destinationApplication)">
-						<template name="model">
-							<comboitem label="@load(each)" />
+						model="@load(SRTPvm.applications)" selectedItem="@save(SRTPvm.destinationApplication)">
+						<template name="model" var="app">
+							<comboitem label="@load(app.appLabel)" />
 						</template>
 					</combobox>
 					<separator spacing="10px" />
@@ -92,17 +92,17 @@
 					<separator spacing="10px" />
 					<label value="Label：" />
 					<combobox id="cmbLabel2" width="100px" model="@load(SRTPvm.dataLabels)"
-						selectedItem="@save(SRTPvm.appPolicy.dataLabel)">
-						<template name="model">
-							<comboitem label="@load(each)" value="@load(each)" />
+						selectedItem="@save(SRTPvm.label)">
+						<template name="model" var="lb">
+							<comboitem label="@load(lb.label)" />
 						</template>
 					</combobox>
 					<separator spacing="10px" />
 					<label value="Application：" />
 					<combobox id="cmbApp" width="250px" model="@load(SRTPvm.applications)"
-						selectedItem="@save(SRTPvm.appPolicy.application)">
-						<template name="model">
-							<comboitem label="@load(each)" />
+						selectedItem="@save(SRTPvm.sourceApplication)">
+						<template name="model" var="app">
+							<comboitem label="@load(app.appLabel)" />
 						</template>
 					</combobox>
 					<separator spacing="10px" />

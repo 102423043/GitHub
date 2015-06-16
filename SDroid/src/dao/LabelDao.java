@@ -54,6 +54,9 @@ public class LabelDao {
 		}
 	}
 	
+	/**
+	 * 功能: 依label Id刪除該筆資料
+	 * */
 	public boolean removeById(String id){
 		boolean res = false;   
 		
@@ -83,6 +86,9 @@ public class LabelDao {
 		return res;	
 	}
 	
+	/**
+	 * 功能: 依Id查詢Label物件
+	 * */
 	public Label getById(String id){
 		List<Label> pojoList = new ArrayList<Label>();
 		ResultSetMapper<Label> resultSetMapper = new ResultSetMapper<Label>();
@@ -107,6 +113,63 @@ public class LabelDao {
 	    return pojoList.get(0);
 	}
 	
+	/**
+	 * 功能: 依label名稱查詢Label物件
+	 * */
+	public Label getByLabelName(String name){
+		List<Label> pojoList = new ArrayList<Label>();
+		ResultSetMapper<Label> resultSetMapper = new ResultSetMapper<Label>();
+		sqlStr = "select * from "+tableName+" where label='"+name+"'";
+	    try 
+	    { 
+	      stat = con.createStatement(); 
+	      rs = stat.executeQuery(sqlStr); 
+	      logInfo.info("getByLabelName: %s", sqlStr);	
+	      
+	      pojoList= resultSetMapper.mapRersultSetToObject(rs, Label.class);
+	      
+	    } 
+	    catch(SQLException e) 
+	    { 
+	      System.out.println("getByLabelName DropDB Exception :" + e.toString()); 
+	    } 
+	    finally 
+	    { 
+	      Close(); 
+	    }
+	    return pojoList.get(0);
+	}
+	
+	/**
+	 * 功能: 依label Id查詢Label物件
+	 * */
+	public Label getByLabelId(String labelId){
+		List<Label> pojoList = new ArrayList<Label>();
+		ResultSetMapper<Label> resultSetMapper = new ResultSetMapper<Label>();
+		sqlStr = "select * from "+tableName+" where label_Id='"+labelId+"'";
+	    try 
+	    { 
+	      stat = con.createStatement(); 
+	      rs = stat.executeQuery(sqlStr); 
+	      logInfo.info("getByLabelId: %s", sqlStr);	
+	      
+	      pojoList= resultSetMapper.mapRersultSetToObject(rs, Label.class);
+	      
+	    } 
+	    catch(SQLException e) 
+	    { 
+	      System.out.println("getByLabelId DropDB Exception :" + e.toString()); 
+	    } 
+	    finally 
+	    { 
+	      Close(); 
+	    }
+	    return pojoList.get(0);
+	}
+	
+	/**
+	 * 功能: 取得最後一個Label Id
+	 * */
 	public Integer getLastDataId() {
 		List<Label> pojoList = new ArrayList<Label>();
 		ResultSetMapper<Label> resultSetMapper = new ResultSetMapper<Label>();

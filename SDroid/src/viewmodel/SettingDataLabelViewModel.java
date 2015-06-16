@@ -1,6 +1,5 @@
 package viewmodel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import model.DataLabel;
@@ -36,12 +35,9 @@ public class SettingDataLabelViewModel {
 	private LabelDao dlDao;
 	private PolicyDao pDao;
 	private DataLabelDao datalblDao;
-	// Util
-	private LogInfo logInfo;
 	// ListView
 	private List<Label> labels;
 	private List<DataLabel> datalabels;
-	private List<String> labelStrList;
 	//UI
 	@Wire("#fileName")
 	private org.zkoss.zul.Label fileName;
@@ -55,8 +51,6 @@ public class SettingDataLabelViewModel {
 		pDao = new PolicyDao();
 		datalblDao = new DataLabelDao();
 		
-		logInfo = new LogInfo();
-		labelStrList = new ArrayList<String>();
 		labels = new ListModelList<Label>();
 		datalabels = new ListModelList<DataLabel>();
 
@@ -64,11 +58,6 @@ public class SettingDataLabelViewModel {
 	}
 
 	public void loadData() {
-	
-		List<Label> dataList = dlDao.getAllList();
-		for (Label data : dataList) {
-			labelStrList.add(data.getLabel());
-		}
 		
 		getDataLabelList();
 	}
@@ -100,8 +89,10 @@ public class SettingDataLabelViewModel {
 	 * */
 	@Command
 	public void insertDataLabel() {
-		if(!StringUtils.isBlank(fileName.getValue()) && !StringUtils.isBlank(dataLabel.getLabel())){
+		if(!StringUtils.isBlank(fileName.getValue()) && !StringUtils.isBlank(label.getLabelId())){
+			dataLabel.setLabel(label.getLabelId());
 			dataLabel.setFileName(fileName.getValue());
+			
 			datalblDao.insert(dataLabel);
 			Messagebox.show("新增成功");
 			getDataLabelList();
@@ -138,7 +129,7 @@ public class SettingDataLabelViewModel {
 	/**
 	 * 功能: 刪除標籤
 	 * */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Command
 	public void removeLabel(@BindingParam("mStr") final String id) {
 		Label dl = dlDao.getById(id);
@@ -168,12 +159,22 @@ public class SettingDataLabelViewModel {
 		}
 	}
 
-	
+	/**
+	 * 讀取UI fileName必備Function
+	 * */
 	@AfterCompose
 	public void afterCompose(@ContextParam(ContextType.VIEW) Component view){
 	    Selectors.wireComponents(view, this, false);
 	}
 	
+	
+	/**
+	 * Getter & Setter
+	 * */
+	public void setLabel(Label label) {
+		this.label = label;
+	}
+
 	public Label getLabel() {
 		return label;
 	}
@@ -188,10 +189,6 @@ public class SettingDataLabelViewModel {
 
 	public List<DataLabel> getDatalabels() {
 		return datalabels;
-	}
-
-	public List<String> getLabelStrList() {
-		return labelStrList;
 	}
 
 }

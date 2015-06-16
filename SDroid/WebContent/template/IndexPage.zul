@@ -1,5 +1,5 @@
 <hlayout style="padding: 20px">
-<vlayout width="900px">
+<vlayout width="800px">
 	<panel title="安全政策制定" border="normal" height="70%">
 		<panelchildren>
 		<groupbox>

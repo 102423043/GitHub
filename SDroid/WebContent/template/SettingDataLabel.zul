@@ -9,10 +9,10 @@
 			<separator spacing="10px" />
 			<hbox>
 				<label value="Label：" />
-				<combobox id="cmbLabel" width="100px" model="@load(SDLvm.labelStrList)"
-					selectedItem="@save(SDLvm.dataLabel.label)">
-					<template name="model">
-						<comboitem label="@load(each)" value="@load(each)" />
+				<combobox id="cmbLabel" width="100px" model="@load(SDLvm.labels)"
+					selectedItem="@save(SDLvm.label)">
+					<template name="model" var="lb">
+						<comboitem label="@load(lb.label)" value="@load(lb.labelId)" />
 					</template>
 				</combobox>
 				<separator spacing="10px" />

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import model.Permission;
 import model.PolicyMatched;
 import util.JDBCmysql;
 import util.LogInfo;
@@ -186,6 +187,9 @@ public class PolicyMatchedDao {
 	    } 
 	    finally 
 	    { 
+		  if(pojoList == null){
+				pojoList = new ArrayList<PolicyMatched>();
+		  }
 	      Close(); 
 	    }	
 	    return pojoList;
