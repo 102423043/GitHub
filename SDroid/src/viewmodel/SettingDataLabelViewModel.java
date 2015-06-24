@@ -71,6 +71,8 @@ public class SettingDataLabelViewModel {
 		List<DataLabel> dataList = datalblDao.getAllList();
 		if (dataList != null) {
 			for (DataLabel label : dataList) {
+				Label l = dlDao.getByLabelId(label.getLabel());
+				label.setLabel(l.getLabel());
 				datalabels.add(label);
 			}
 		}

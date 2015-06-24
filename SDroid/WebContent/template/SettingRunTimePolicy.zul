@@ -28,7 +28,7 @@
 				<separator spacing="10px" />
 				<hbox>
 					<label value="Source Application：" />
-					<combobox id="cmbSourceApp" width="250px"
+					<combobox id="cmbSourceApp"
 						model="@load(SRTPvm.applications)" selectedItem="@save(SRTPvm.sourceApplication)">
 						<template name="model" var="app">
 							<comboitem label="@load(app.appLabel)" />
@@ -36,7 +36,7 @@
 					</combobox>
 					<separator spacing="10px" />
 					<label value="Destination Application：" />
-					<combobox id="cmbDestApp" width="250px"
+					<combobox id="cmbDestApp" 
 						model="@load(SRTPvm.applications)" selectedItem="@save(SRTPvm.destinationApplication)">
 						<template name="model" var="app">
 							<comboitem label="@load(app.appLabel)" />
@@ -49,7 +49,7 @@
 				<!-- Run-time 清單 -->
 				<separator spacing="10px" />
 				<listbox id="lbRunTime" model="@load(SRTPvm.runTimePolicies)" emptyMessage="No policies found."
-					mold="paging" pageSize="8" width="1000px">
+					mold="paging" pageSize="8">
 					<auxhead>
 						<auxheader colspan="6" iconSclass="icon-Posts">
 							Run-time 安全政策清單
@@ -91,7 +91,7 @@
 					</combobox>
 					<separator spacing="10px" />
 					<label value="Label：" />
-					<combobox id="cmbLabel2" width="100px" model="@load(SRTPvm.dataLabels)"
+					<combobox id="cmbLabel2" model="@load(SRTPvm.dataLabels)"
 						selectedItem="@save(SRTPvm.label)">
 						<template name="model" var="lb">
 							<comboitem label="@load(lb.label)" />
@@ -99,7 +99,7 @@
 					</combobox>
 					<separator spacing="10px" />
 					<label value="Application：" />
-					<combobox id="cmbApp" width="250px" model="@load(SRTPvm.applications)"
+					<combobox id="cmbApp" model="@load(SRTPvm.applications)"
 						selectedItem="@save(SRTPvm.sourceApplication)">
 						<template name="model" var="app">
 							<comboitem label="@load(app.appLabel)" />
@@ -112,7 +112,7 @@
 				<!--App Policy 清單 -->
 				<separator spacing="10px" />
 				<listbox model="@load(SRTPvm.appPolicies)" emptyMessage="No policies found."
-					mold="paging" pageSize="8" width="1000px">
+					mold="paging" pageSize="8">
 					<auxhead>
 						<auxheader colspan="5" iconSclass="icon-Posts">
 							App Policy 安全政策清單

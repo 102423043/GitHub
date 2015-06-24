@@ -31,7 +31,7 @@
 			<!-- 資料標籤 清單 -->
 			<separator spacing="10px" />
 			<listbox model="@load(SDLvm.datalabels)" emptyMessage="No datalabel found."
-				mold="paging" pageSize="8" width="1000px">
+				mold="paging" pageSize="8">
 				<auxhead>
 					<auxheader colspan="4" iconSclass="icon-Posts">
 						資料標籤清單
@@ -73,10 +73,10 @@
 			<!-- 標籤制定 清單 -->
 			<separator spacing="10px" />
 			<listbox model="@load(SDLvm.labels)" emptyMessage="No label found."
-				mold="paging" pageSize="8" width="1000px">
+				mold="paging" pageSize="8">
 				<auxhead>
 					<auxheader colspan="4" iconSclass="icon-Posts">
-						標籤制定清單
+						標籤清單
 					</auxheader>
 				</auxhead>
 				<listhead>

@@ -18,7 +18,7 @@
 							</combobox>
 							<separator spacing="10px" />
 							<label value="Application：" />
-							<combobox id="cmbApp" width="230px" model="@load(SPvm.applications)"
+							<combobox id="cmbApp" model="@load(SPvm.applications)"
 								selectedItem="@bind(SPvm.installPolicy.application)">
 								<template name="model">
 									<comboitem label="@load(each)" value="@load(each)" />
@@ -26,7 +26,7 @@
 							</combobox>
 							<separator spacing="10px" />
 							<label value="Permission：" />
-							<combobox id="cmbPermission" width="350px"
+							<combobox id="cmbPermission"
 								model="@load(SPvm.permissions)" selectedItem="@bind(SPvm.installPolicy.permission)">
 								<template name="model">
 									<comboitem label="@load(each)" value="@load(each)" />

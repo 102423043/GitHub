@@ -107,10 +107,10 @@ public class DataLabelDao {
 	    return pojoList.get(0);
 	}
 	
-	public List<DataLabel> getByLabelAndFileName(String label,String fileName){
+	public DataLabel getByFileName(String fileName){
 		List<DataLabel> pojoList = new ArrayList<DataLabel>();
 		ResultSetMapper<DataLabel> resultSetMapper = new ResultSetMapper<DataLabel>();
-		sqlStr = "select * from "+tableName+" where label='"+label+"' and file_name='"+fileName+"'";
+		sqlStr = "select * from "+tableName+" where file_name='"+fileName+"'";
 	    try 
 	    { 
 	      stat = con.createStatement(); 
@@ -127,11 +127,11 @@ public class DataLabelDao {
 	    finally 
 	    { 
 			if(pojoList == null){
-				pojoList = new ArrayList<DataLabel>();
+				return null;
 			}
 	      Close(); 
 	    }
-	    return pojoList;
+	    return pojoList.get(0);
 	}
 	
 	
