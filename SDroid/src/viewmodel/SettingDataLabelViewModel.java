@@ -134,10 +134,10 @@ public class SettingDataLabelViewModel {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Command
 	public void removeLabel(@BindingParam("mStr") final String id) {
-		Label dl = dlDao.getById(id);
+		final Label dl = dlDao.getById(id);
 		final List<Policy> list = pDao.getListByDataLabel(dl.getLabelId());
 		if (list != null) {
-			Messagebox.show("此筆Label已有Matched AppPolicy，是否確定刪除?", "Question",
+			Messagebox.show("此筆Label已有Matched Policy，是否確定刪除?", "Question",
 					Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
 					new EventListener() {
 						@Override
@@ -146,6 +146,7 @@ public class SettingDataLabelViewModel {
 								for (Policy p : list) {
 									pDao.removeById(p.getId().toString());
 								}
+								datalblDao.removeByLabel(dl.getLabelId());
 								dlDao.removeById(id);
 								Messagebox.show("Label刪除成功");
 								getDataLabelList();
@@ -155,6 +156,7 @@ public class SettingDataLabelViewModel {
 						}
 					});
 		} else {
+			datalblDao.removeByLabel(dl.getLabelId());
 			dlDao.removeById(id);
 			Messagebox.show("Label刪除成功");
 			getDataLabelList();

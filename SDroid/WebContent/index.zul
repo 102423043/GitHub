@@ -32,7 +32,7 @@
 				onClick="@command('goToSettingInstallTimePolicy', hStr=self.label)" />
 			<navitem iconSclass="icon icon-white icon-pencil" label="Run-Time安全政策制定"
 				onClick="@command('goToSettingRunTimePolicy', hStr=self.label)" />
-			<navitem iconSclass="icon icon-white icon-file" label="資料標籤制定"
+			<navitem iconSclass="icon icon-white icon-file" label="標籤管理"
 				onClick="@command('goToSettingLabel', hStr=self.label)" />				
 			<navitem iconSclass="icon icon-white icon-signal" label="政策比對機制"
 				onClick="@command('goToPolicyMatched', hStr=self.label)" />

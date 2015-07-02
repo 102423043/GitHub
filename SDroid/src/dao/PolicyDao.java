@@ -108,7 +108,7 @@ public class PolicyDao {
 	public List<Policy> getListByDataLabel(String dataLabel) {
 		List<Policy> pojoList = new ArrayList<Policy>();
 		ResultSetMapper<Policy> resultSetMapper = new ResultSetMapper<Policy>();
-		sqlStr = "select * from " + tableName + " where type='AppPolicy' and "
+		sqlStr = "select * from " + tableName + " where type='AppPolicy' or type='RunTimePolicy' and "
 				+ " policy like '%" + dataLabel + "%'";
 		try {
 			stat = con.createStatement();

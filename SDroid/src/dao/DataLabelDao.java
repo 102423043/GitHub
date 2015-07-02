@@ -83,6 +83,35 @@ public class DataLabelDao {
 		return res;	
 	}
 	
+	public boolean removeByLabel(String labelId){
+		boolean res = false;   
+		
+		String sqlStr = "DELETE FROM "+tableName+" WHERE label='"+labelId+"'";
+		
+	    try 
+	    { 
+	      stat = con.createStatement(); 
+	      int check = stat.executeUpdate(sqlStr); 
+	      System.out.println("removeByLabelSQL:"+sqlStr);	
+	      
+	      if(check !=0)
+	      {
+	    	  res = true;
+	      }
+	      
+	    } 
+	    catch(SQLException e) 
+	    { 
+	      System.out.println("removeByLabel DropDB Exception :" + e.toString()); 
+	    } 
+	    finally 
+	    { 
+	      Close(); 
+	    }		
+		
+		return res;	
+	}
+	
 	public DataLabel getById(String id){
 		List<DataLabel> pojoList = new ArrayList<DataLabel>();
 		ResultSetMapper<DataLabel> resultSetMapper = new ResultSetMapper<DataLabel>();
