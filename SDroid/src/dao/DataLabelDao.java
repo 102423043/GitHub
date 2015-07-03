@@ -12,6 +12,7 @@ import java.util.List;
 
 import model.DataLabel;
 import model.Permission;
+import model.Policy;
 import util.JDBCmysql;
 import util.LogInfo;
 import util.ResultSetMapper;
@@ -136,7 +137,7 @@ public class DataLabelDao {
 	    return pojoList.get(0);
 	}
 	
-	public DataLabel getByFileName(String fileName){
+	public List<DataLabel> getByFileName(String fileName){
 		List<DataLabel> pojoList = new ArrayList<DataLabel>();
 		ResultSetMapper<DataLabel> resultSetMapper = new ResultSetMapper<DataLabel>();
 		sqlStr = "select * from "+tableName+" where file_name='"+fileName+"'";
@@ -155,12 +156,12 @@ public class DataLabelDao {
 	    } 
 	    finally 
 	    { 
-			if(pojoList == null){
-				return null;
+			if (pojoList == null) {
+				pojoList = new ArrayList<DataLabel>();
 			}
 	      Close(); 
 	    }
-	    return pojoList.get(0);
+	    return pojoList;
 	}
 	
 	
